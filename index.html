@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Shana Data & AI Consulting LLC — Intelligence. Automation. Results.</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg-dark: #080c14;
+    --bg-card: #0d1220;
+    --bg-mid: #111827;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --accent-glow: rgba(0,212,255,0.18);
+    --text-primary: #f0f4ff;
+    --text-muted: #8b9ab7;
+    --text-light: #c8d4ed;
+    --border: rgba(0,212,255,0.12);
+    --white: #ffffff;
+    --gradient-hero: linear-gradient(135deg, #080c14 0%, #0d1a2f 50%, #080c14 100%);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    line-height: 1.7;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.35;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 5%;
+    background: rgba(8,12,20,0.82);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+    transition: padding 0.3s;
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.35rem;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex; gap: 2.2rem; list-style: none;
+  }
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: var(--bg-dark) !important;
+    padding: 0.5rem 1.3rem;
+    border-radius: 6px;
+    font-weight: 600 !important;
+    transition: box-shadow 0.2s, transform 0.2s !important;
+  }
+  .nav-cta:hover {
+    box-shadow: 0 0 20px var(--accent-glow);
+    transform: translateY(-1px);
+    color: var(--bg-dark) !important;
+  }
+
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--text-primary); border-radius: 2px;
+    transition: all 0.3s;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 8rem 5% 5rem;
+    background: var(--gradient-hero);
+    position: relative; overflow: hidden;
+    text-align: center;
+  }
+
+  /* mesh blobs */
+  .blob {
+    position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none;
+    animation: blobFloat 8s ease-in-out infinite alternate;
+  }
+  .blob1 { width: 500px; height: 500px; background: rgba(0,212,255,0.07); top: -100px; left: -150px; animation-delay: 0s; }
+  .blob2 { width: 400px; height: 400px; background: rgba(124,58,237,0.09); bottom: -80px; right: -100px; animation-delay: -3s; }
+  .blob3 { width: 300px; height: 300px; background: rgba(0,212,255,0.05); top: 40%; left: 50%; transform: translate(-50%,-50%); animation-delay: -5s; }
+
+  @keyframes blobFloat {
+    from { transform: translateY(0) scale(1); }
+    to   { transform: translateY(-30px) scale(1.05); }
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.25);
+    border-radius: 50px;
+    padding: 0.4rem 1.1rem;
+    font-size: 0.78rem; font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-badge::before {
+    content: ''; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 1.5s ease infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.07;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.9s ease 0.1s both;
+  }
+  .hero h1 .accent { color: var(--accent); }
+  .hero h1 .accent2 { color: var(--accent2); background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: var(--text-muted);
+    max-width: 620px; margin: 0 auto 2.8rem;
+    line-height: 1.75;
+    animation: fadeUp 1s ease 0.2s both;
+  }
+
+  .hero-btns {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    animation: fadeUp 1s ease 0.35s both;
+  }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent); color: var(--bg-dark);
+    padding: 0.85rem 2rem; border-radius: 8px;
+    font-weight: 700; font-size: 0.95rem;
+    text-decoration: none;
+    transition: box-shadow 0.3s, transform 0.2s;
+    border: none; cursor: pointer;
+  }
+  .btn-primary:hover { box-shadow: 0 0 30px rgba(0,212,255,0.35); transform: translateY(-2px); }
+
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: var(--text-primary);
+    padding: 0.85rem 2rem; border-radius: 8px;
+    font-weight: 500; font-size: 0.95rem;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    transition: border-color 0.3s, color 0.3s, transform 0.2s;
+    cursor: pointer;
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  /* stats strip */
+  .stats-strip {
+    display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;
+    margin-top: 5rem;
+    animation: fadeUp 1s ease 0.5s both;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem; font-weight: 800;
+    color: var(--white);
+    line-height: 1;
+  }
+  .stat-num span { color: var(--accent); }
+  .stat-label { font-size: 0.82rem; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  @keyframes fadeUp { from { opacity:0; transform: translateY(24px); } to { opacity:1; transform: translateY(0); } }
+
+  /* ── SECTIONS ── */
+  section { position: relative; z-index: 1; }
+
+  .section-label {
+    display: inline-block;
+    font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.9rem;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.9rem, 4vw, 3rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+
+  .section-desc {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    max-width: 550px;
+    line-height: 1.75;
+  }
+
+  /* ── LOGOS ── */
+  .logos-section {
+    padding: 3.5rem 5%;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+  .logos-label { font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2rem; }
+  .logos-track {
+    display: flex; gap: 3rem; align-items: center; justify-content: center; flex-wrap: wrap;
+  }
+  .logo-item {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 1rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    transition: color 0.3s;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid transparent;
+    border-radius: 6px;
+  }
+  .logo-item:hover { color: var(--accent); border-color: var(--border); }
+
+  /* ── SERVICES ── */
+  .services-section {
+    padding: 7rem 5%;
+    background: var(--bg-dark);
+  }
+  .services-header { margin-bottom: 4rem; }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .service-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.2rem;
+    position: relative; overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    cursor: default;
+  }
+  .service-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .service-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(0,212,255,0.3);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+  }
+  .service-card:hover::before { opacity: 1; }
+
+  .service-icon {
+    width: 52px; height: 52px;
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.4rem;
+    transition: background 0.3s;
+  }
+  .service-card:hover .service-icon { background: rgba(0,212,255,0.15); }
+
+  .service-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.15rem; font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.65rem;
+  }
+  .service-card p { color: var(--text-muted); font-size: 0.93rem; line-height: 1.7; }
+
+  .service-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 1.3rem;
+    color: var(--accent); font-size: 0.88rem; font-weight: 600;
+    text-decoration: none;
+    transition: gap 0.2s;
+  }
+  .service-link:hover { gap: 10px; }
+
+  /* ── HOW IT WORKS ── */
+  .process-section {
+    padding: 7rem 5%;
+    background: var(--bg-mid);
+  }
+  .process-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+  }
+  .process-steps { display: flex; flex-direction: column; gap: 1.8rem; margin-top: 2.5rem; }
+
+  .step {
+    display: flex; gap: 1.2rem; align-items: flex-start;
+    padding: 1.4rem 1.6rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: border-color 0.3s, transform 0.3s;
+    cursor: default;
+  }
+  .step:hover { border-color: rgba(0,212,255,0.3); transform: translateX(5px); }
+  .step-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem; font-weight: 800;
+    color: var(--accent); opacity: 0.5;
+    min-width: 36px; line-height: 1;
+    margin-top: 2px;
+  }
+  .step-body h4 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; color: var(--white); margin-bottom: 0.3rem; }
+  .step-body p { font-size: 0.89rem; color: var(--text-muted); }
+
+  .process-visual {
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem;
+    overflow: hidden;
+  }
+  .process-visual::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at top right, rgba(124,58,237,0.12), transparent 60%);
+    pointer-events: none;
+  }
+
+  .visual-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 1.5rem; }
+  .bar-chart { display: flex; flex-direction: column; gap: 1rem; }
+  .bar-row { display: flex; align-items: center; gap: 1rem; }
+  .bar-label { font-size: 0.8rem; color: var(--text-muted); width: 80px; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+  .bar-fill {
+    height: 100%; border-radius: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transform-origin: left;
+    animation: barGrow 1.5s ease forwards;
+    transform: scaleX(0);
+  }
+  @keyframes barGrow { to { transform: scaleX(1); } }
+  .bar-pct { font-size: 0.78rem; font-weight: 600; color: var(--accent); width: 36px; text-align: right; }
+
+  .kpi-row { display: flex; gap: 1rem; margin-top: 2rem; }
+  .kpi-box {
+    flex: 1; background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.12);
+    border-radius: 10px; padding: 1rem;
+    text-align: center;
+  }
+  .kpi-val { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--white); }
+  .kpi-val span { color: var(--accent); }
+  .kpi-key { font-size: 0.72rem; color: var(--text-muted); margin-top: 3px; }
+
+  /* ── INDUSTRIES ── */
+  .industries-section {
+    padding: 7rem 5%;
+    background: var(--bg-dark);
+  }
+  .industries-header { text-align: center; margin-bottom: 4rem; }
+  .industries-header .section-desc { margin: 0 auto; }
+
+  .industries-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.2rem;
+  }
+  .industry-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.8rem 1.5rem;
+    text-align: center;
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    cursor: default;
+  }
+  .industry-card:hover {
+    border-color: rgba(0,212,255,0.35);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+  }
+  .industry-emoji { font-size: 2.2rem; margin-bottom: 1rem; display: block; }
+  .industry-card h4 { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--white); margin-bottom: 0.4rem; }
+  .industry-card p { font-size: 0.83rem; color: var(--text-muted); }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials-section {
+    padding: 7rem 5%;
+    background: var(--bg-mid);
+    text-align: center;
+  }
+  .testi-header { margin-bottom: 4rem; }
+
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    text-align: left;
+  }
+  .testi-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 2rem;
+    position: relative; overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .testi-card:hover { transform: translateY(-4px); border-color: rgba(0,212,255,0.25); }
+  .testi-quote {
+    font-size: 2.5rem; color: var(--accent); opacity: 0.3;
+    font-family: Georgia, serif; line-height: 1;
+    margin-bottom: 0.8rem;
+  }
+  .testi-text {
+    font-size: 0.93rem; color: var(--text-light); line-height: 1.75;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+  .testi-author { display: flex; align-items: center; gap: 0.9rem; }
+  .testi-avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.95rem;
+    color: var(--white); flex-shrink: 0;
+  }
+  .testi-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; color: var(--white); }
+  .testi-role { font-size: 0.78rem; color: var(--text-muted); }
+
+  /* ── FAQ ── */
+  .faq-section {
+    padding: 7rem 5%;
+    background: var(--bg-dark);
+  }
+  .faq-inner { display: grid; grid-template-columns: 1fr 1.5fr; gap: 5rem; align-items: start; }
+  .faq-list { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+
+  .faq-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+  }
+  .faq-q {
+    padding: 1.2rem 1.5rem;
+    display: flex; justify-content: space-between; align-items: center;
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600; font-size: 0.95rem; color: var(--white);
+    transition: color 0.2s;
+    user-select: none;
+  }
+  .faq-q:hover { color: var(--accent); }
+  .faq-icon {
+    width: 22px; height: 22px;
+    border: 1px solid var(--border); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; color: var(--accent);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-a {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s;
+    padding: 0 1.5rem;
+    font-size: 0.9rem; color: var(--text-muted); line-height: 1.75;
+  }
+  .faq-item.open .faq-a { max-height: 300px; padding: 0 1.5rem 1.3rem; }
+
+  /* ── CTA ── */
+  .cta-section {
+    padding: 7rem 5%;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: ''; position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(0,212,255,0.08), transparent 70%);
+    pointer-events: none;
+  }
+  .cta-section .section-title { margin-bottom: 1rem; }
+  .cta-section .section-desc { margin: 0 auto 2.5rem; max-width: 480px; }
+
+  /* ── CONTACT FORM ── */
+  .contact-section {
+    padding: 7rem 5%;
+    background: var(--bg-dark);
+  }
+  .contact-inner { display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem; align-items: start; }
+  .contact-info { margin-top: 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+  .contact-detail {
+    display: flex; gap: 1rem; align-items: flex-start;
+  }
+  .contact-icon {
+    width: 42px; height: 42px; flex-shrink: 0;
+    background: rgba(0,212,255,0.07);
+    border: 1px solid rgba(0,212,255,0.18);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+  }
+  .contact-detail h5 { font-family: 'Syne', sans-serif; font-size: 0.88rem; font-weight: 700; color: var(--white); }
+  .contact-detail p { font-size: 0.87rem; color: var(--text-muted); }
+
+  .contact-form {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem;
+  }
+  .form-group { margin-bottom: 1.3rem; }
+  .form-group label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.45rem; letter-spacing: 0.04em; }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    background: var(--bg-dark);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.93rem;
+    transition: border-color 0.25s, box-shadow 0.25s;
+    outline: none;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0,212,255,0.08);
+  }
+  .form-group textarea { resize: vertical; min-height: 120px; }
+  .form-group select option { background: var(--bg-dark); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .form-submit {
+    width: 100%; padding: 0.95rem;
+    background: var(--accent); color: var(--bg-dark);
+    border: none; border-radius: 8px;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem;
+    cursor: pointer;
+    transition: box-shadow 0.3s, transform 0.2s;
+  }
+  .form-submit:hover { box-shadow: 0 0 25px rgba(0,212,255,0.3); transform: translateY(-1px); }
+
+  .form-success {
+    display: none; text-align: center; padding: 1.5rem;
+    color: var(--accent); font-family: 'Syne', sans-serif; font-weight: 600;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    padding: 4rem 5% 2rem;
+  }
+  .footer-top {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem;
+    margin-bottom: 3rem;
+  }
+  .footer-brand .nav-logo { font-size: 1.3rem; display: inline-block; margin-bottom: 1rem; }
+  .footer-brand p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.75; max-width: 260px; }
+
+  .footer-col h5 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.88rem; color: var(--white); margin-bottom: 1.2rem; letter-spacing: 0.05em; text-transform: uppercase; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .footer-col ul li a { color: var(--text-muted); text-decoration: none; font-size: 0.87rem; transition: color 0.2s; }
+  .footer-col ul li a:hover { color: var(--accent); }
+
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 1.8rem;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+    font-size: 0.82rem; color: var(--text-muted);
+  }
+  .footer-bottom a { color: var(--text-muted); text-decoration: none; }
+  .footer-bottom a:hover { color: var(--accent); }
+
+  /* ── IMAGES ── */
+  .hero-img-wrap {
+    position: relative; flex-shrink: 0;
+    width: 420px; height: 420px;
+  }
+  .hero-img-wrap img {
+    width: 100%; height: 100%; object-fit: cover;
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  }
+  .hero-img-wrap::before {
+    content: '';
+    position: absolute; inset: -2px;
+    border-radius: 26px;
+    background: linear-gradient(135deg, rgba(0,212,255,0.4), rgba(124,58,237,0.3), transparent 60%);
+    z-index: -1;
+  }
+  .hero-img-badge {
+    position: absolute; bottom: -18px; left: -18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 0.9rem 1.2rem;
+    display: flex; align-items: center; gap: 0.7rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  }
+  .hero-img-badge-icon { font-size: 1.4rem; }
+  .hero-img-badge-text { font-family: 'Syne', sans-serif; font-size: 0.82rem; font-weight: 700; color: var(--white); line-height: 1.3; }
+  .hero-img-badge-text span { color: var(--accent); display: block; font-size: 1rem; }
+
+  /* hero split layout */
+  .hero-inner {
+    display: flex; align-items: center; gap: 4rem; justify-content: center;
+    width: 100%; flex-wrap: wrap;
+  }
+  .hero-content { flex: 1; min-width: 300px; text-align: left; }
+  .hero-content .hero-btns { justify-content: flex-start; }
+  .hero-content .stats-strip { justify-content: flex-start; }
+
+  /* about image section */
+  .about-section {
+    padding: 7rem 5%;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+  }
+  .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .about-img-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  }
+  .about-img-grid img {
+    width: 100%; border-radius: 14px; object-fit: cover;
+    border: 1px solid var(--border);
+    transition: transform 0.4s, box-shadow 0.4s;
+  }
+  .about-img-grid img:hover { transform: scale(1.03); box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
+  .about-img-grid img:first-child { grid-row: span 2; height: 340px; }
+  .about-img-grid img:not(:first-child) { height: 160px; }
+  .about-points { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+  .about-point { display: flex; align-items: flex-start; gap: 0.8rem; }
+  .about-point-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-top: 8px; flex-shrink: 0; box-shadow: 0 0 8px var(--accent); }
+  .about-point p { font-size: 0.92rem; color: var(--text-muted); }
+  .about-point strong { color: var(--text-primary); }
+
+  /* viz image strip */
+  .viz-strip {
+    padding: 5rem 5%;
+    background: var(--bg-mid);
+    border-top: 1px solid var(--border);
+  }
+  .viz-strip-header { text-align: center; margin-bottom: 3rem; }
+  .viz-images {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  }
+  .viz-img-card {
+    border-radius: 16px; overflow: hidden;
+    border: 1px solid var(--border);
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: default;
+  }
+  .viz-img-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+  .viz-img-card img { width: 100%; height: 220px; object-fit: cover; display: block; }
+  .viz-img-label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(8,12,20,0.95), transparent);
+    padding: 2rem 1.2rem 1rem;
+    font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.88rem;
+    color: var(--white);
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── MOBILE ── */
+  @media (max-width: 900px) {
+    .process-inner { grid-template-columns: 1fr; }
+    .faq-inner { grid-template-columns: 1fr; }
+    .contact-inner { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .about-inner { grid-template-columns: 1fr; }
+    .viz-images { grid-template-columns: 1fr 1fr; }
+    .hero-img-wrap { width: 320px; height: 320px; }
+    .hero-inner { flex-direction: column; text-align: center; }
+    .hero-content { text-align: center; }
+    .hero-content .hero-btns { justify-content: center; }
+    .hero-content .stats-strip { justify-content: center; }
+  }
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .nav-links.open {
+      display: flex; flex-direction: column;
+      position: fixed; top: 64px; left: 0; right: 0;
+      background: rgba(8,12,20,0.97);
+      padding: 2rem; gap: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .stats-strip { gap: 2rem; }
+    .footer-top { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Shana <span>Data & AI</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#industries">Industries</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact" class="nav-cta">Get Started</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+  <div class="hero-inner" style="position:relative;z-index:2;">
+    <div class="hero-content">
+      <div class="hero-badge">AI &amp; Data Consultancy — New Jersey LLC</div>
+      <h1>Smarter Business Starts<br><span class="accent2">With Better AI & Data</span></h1>
+      <p class="hero-sub">Shana Data & AI Consulting LLC helps small and medium-sized businesses leverage artificial intelligence and data-driven solutions — improving efficiency, decision-making, and competitiveness without needing an in-house team.</p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn-primary">Book a Free Consultation →</a>
+        <a href="#services" class="btn-secondary">Explore Services</a>
+      </div>
+      <div class="stats-strip">
+        <div class="stat"><div class="stat-num">100<span>%</span></div><div class="stat-label">Client Focus</div></div>
+        <div class="stat"><div class="stat-num">6<span>+</span></div><div class="stat-label">Core Services</div></div>
+        <div class="stat"><div class="stat-num">8<span>+</span></div><div class="stat-label">Industries We Serve</div></div>
+        <div class="stat"><div class="stat-num"><span>∞</span></div><div class="stat-label">Commitment to Results</div></div>
+      </div>
+    </div>
+    <div class="hero-img-wrap reveal">
+      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80" alt="Data analytics team at work" loading="lazy"/>
+      <div class="hero-img-badge">
+        <div class="hero-img-badge-icon">📊</div>
+        <div class="hero-img-badge-text">
+          <span>+94%</span>
+          Data Accuracy Gained
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS -->
+<div class="logos-section reveal">
+  <p class="logos-label">Tools &amp; Technologies We Work With</p>
+  <div class="logos-track">
+    <div class="logo-item">Python</div>
+    <div class="logo-item">R</div>
+    <div class="logo-item">TensorFlow</div>
+    <div class="logo-item">Power BI</div>
+    <div class="logo-item">Tableau</div>
+    <div class="logo-item">SQL</div>
+    <div class="logo-item">AWS</div>
+    <div class="logo-item">Scikit-Learn</div>
+  </div>
+</div>
+
+<!-- ABOUT WITH IMAGES -->
+<section class="about-section">
+  <div class="about-inner">
+    <div class="about-img-grid reveal">
+      <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80" alt="Consulting team collaboration" loading="lazy"/>
+      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80" alt="Data dashboard analytics" loading="lazy"/>
+      <img src="https://images.unsplash.com/photo-1543286386-713bdd548da4?w=600&q=80" alt="Strategy meeting" loading="lazy"/>
+    </div>
+    <div class="reveal">
+      <span class="section-label">About Us</span>
+      <h2 class="section-title">Freshly Founded.<br>Fully Committed.</h2>
+      <p class="section-desc">Shana Data & AI Consulting LLC is a New Jersey-based single-member LLC specializing in artificial intelligence and data-driven solutions. We serve small to medium-sized businesses that want to adopt modern data technologies but lack in-house expertise.</p>
+      <p class="section-desc" style="margin-top:1rem;">Our goal is simple: help you leverage data and AI to optimize operations, reduce costs, and unlock new growth — with tailored, cost-effective solutions and no bloated agency overhead.</p>
+      <div class="about-points">
+        <div class="about-point"><div class="about-point-dot"></div><p><strong>Boutique & Personal</strong> — You work directly with the expert. No handoffs, no junior staff.</p></div>
+        <div class="about-point"><div class="about-point-dot"></div><p><strong>Tailored Solutions</strong> — Customized to your business, not off-the-shelf packages.</p></div>
+        <div class="about-point"><div class="about-point-dot"></div><p><strong>Transparent & Honest</strong> — Clear pricing, realistic timelines, measurable results.</p></div>
+        <div class="about-point"><div class="about-point-dot"></div><p><strong>Built for Growth</strong> — We want to be your long-term AI and data partner as you scale.</p></div>
+      </div>
+      <br/>
+      <a href="#contact" class="btn-primary" style="margin-top:1rem; display:inline-flex;">Let's Start a Conversation →</a>
+    </div>
+  </div>
+</section>
+
+<!-- DATA VIZ SHOWCASE -->
+<section class="viz-strip">
+  <div class="viz-strip-header reveal">
+    <span class="section-label">Our Work</span>
+    <h2 class="section-title">Insights That Drive Action</h2>
+    <p class="section-desc" style="margin:0 auto;">From dashboards to deep ML models — here's a glimpse of the outputs we deliver.</p>
+  </div>
+  <div class="viz-images">
+    <div class="viz-img-card reveal">
+      <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=700&q=80" alt="Analytics dashboard visualization" loading="lazy"/>
+      <div class="viz-img-label">Business Intelligence Dashboards</div>
+    </div>
+    <div class="viz-img-card reveal">
+      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=700&q=80" alt="Data science charts" loading="lazy"/>
+      <div class="viz-img-label">Predictive Analytics & Modeling</div>
+    </div>
+    <div class="viz-img-card reveal">
+      <img src="https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=700&q=80" alt="Data analysis team" loading="lazy"/>
+      <div class="viz-img-label">AI Strategy & Implementation</div>
+    </div>
+  </div>
+</section>
+<section class="services-section" id="services">
+  <div class="services-header reveal">
+    <span class="section-label">What We Offer</span>
+    <h2 class="section-title">End-to-End AI & Data<br>Solutions for Your Business</h2>
+    <p class="section-desc">From raw data to real decisions — we provide tailored AI and data consulting services designed for SMBs, startups, and growing organizations.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-icon">📊</div>
+      <h3>Data Analytics & Visualization</h3>
+      <p>Transform complex datasets into clear, interactive dashboards and reports. We use Power BI, Tableau, and custom tools to surface insights that drive smarter decisions.</p>
+      <a href="#contact" class="service-link">Learn More →</a>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🤖</div>
+      <h3>Machine Learning & AI Models</h3>
+      <p>Custom ML models built for your specific business problem — from classification and regression to deep learning — deployed and monitored in production environments.</p>
+      <a href="#contact" class="service-link">Learn More →</a>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">⚙️</div>
+      <h3>AI Automation & Implementation</h3>
+      <p>Automate repetitive business processes using AI — reducing manual work, eliminating errors, and freeing your team to focus on high-value tasks.</p>
+      <a href="#contact" class="service-link">Learn More →</a>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">📈</div>
+      <h3>Business Intelligence (BI)</h3>
+      <p>End-to-end BI solutions — data warehousing, ETL pipelines, and real-time KPI dashboards — so your leadership always has the numbers they need.</p>
+      <a href="#contact" class="service-link">Learn More →</a>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">💬</div>
+      <h3>AI Chatbots & Customer Support</h3>
+      <p>Intelligent chatbots that handle customer queries 24/7, reduce support costs, and improve response times — powered by large language models and your own data.</p>
+      <a href="#contact" class="service-link">Learn More →</a>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🔮</div>
+      <h3>Predictive Analytics</h3>
+      <p>Forecast demand, detect churn, predict risks, and model future outcomes — giving your business a data-backed edge over competitors relying on gut instinct.</p>
+      <a href="#contact" class="service-link">Learn More →</a>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🧠</div>
+      <h3>AI Strategy & Roadmap</h3>
+      <p>Not sure where to start with AI? We assess your business, identify opportunities, and build a phased, practical adoption roadmap with clear milestones and ROI targets.</p>
+      <a href="#contact" class="service-link">Learn More →</a>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🎓</div>
+      <h3>Training & Upskilling</h3>
+      <p>Data literacy workshops, Python bootcamps, and hands-on AI training programs tailored to your team's current skill level and your business goals.</p>
+      <a href="#contact" class="service-link">Learn More →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process-section" id="process">
+  <div class="process-inner">
+    <div>
+      <div class="reveal">
+        <span class="section-label">How We Work</span>
+        <h2 class="section-title">Our Proven<br>8-Step Approach</h2>
+        <p class="section-desc">A rigorous, transparent workflow that takes your data from raw input to real-world impact — every time.</p>
+      </div>
+      <div class="process-steps">
+        <div class="step reveal"><div class="step-num">01</div><div class="step-body"><h4>Frame the Problem</h4><p>Define objectives, success metrics, and project scope collaboratively.</p></div></div>
+        <div class="step reveal"><div class="step-num">02</div><div class="step-body"><h4>Collect & Audit Data</h4><p>Gather data from all sources and assess quality, gaps, and integrity.</p></div></div>
+        <div class="step reveal"><div class="step-num">03</div><div class="step-body"><h4>Process & Clean</h4><p>Transform raw data into analysis-ready format with full traceability.</p></div></div>
+        <div class="step reveal"><div class="step-num">04</div><div class="step-body"><h4>Explore & Model</h4><p>Conduct EDA, engineer features, and build validated predictive models.</p></div></div>
+        <div class="step reveal"><div class="step-num">05</div><div class="step-body"><h4>Deploy & Monitor</h4><p>Ship to production with performance monitoring and retraining pipelines.</p></div></div>
+        <div class="step reveal"><div class="step-num">06</div><div class="step-body"><h4>Validate & Test</h4><p>Rigorously evaluate model performance, fairness, and reliability before go-live.</p></div></div>
+        <div class="step reveal"><div class="step-num">07</div><div class="step-body"><h4>Deliver & Document</h4><p>Hand over clean, well-documented code, models, and dashboards your team can own.</p></div></div>
+        <div class="step reveal"><div class="step-num">08</div><div class="step-body"><h4>Review & Iterate</h4><p>Post-launch check-in to measure impact, gather feedback, and refine as needed.</p></div></div>
+      </div>
+    </div>
+    <div class="process-visual reveal">
+      <div class="visual-title">📉 Typical Impact After Engagement</div>
+      <div class="bar-chart">
+        <div class="bar-row"><span class="bar-label">Decision Speed</span><div class="bar-track"><div class="bar-fill" style="width:88%; animation-delay:0.1s"></div></div><span class="bar-pct">+88%</span></div>
+        <div class="bar-row"><span class="bar-label">Data Accuracy</span><div class="bar-track"><div class="bar-fill" style="width:94%; animation-delay:0.3s"></div></div><span class="bar-pct">+94%</span></div>
+        <div class="bar-row"><span class="bar-label">Ops Efficiency</span><div class="bar-track"><div class="bar-fill" style="width:72%; animation-delay:0.5s"></div></div><span class="bar-pct">+72%</span></div>
+        <div class="bar-row"><span class="bar-label">Revenue Impact</span><div class="bar-track"><div class="bar-fill" style="width:65%; animation-delay:0.7s"></div></div><span class="bar-pct">+65%</span></div>
+        <div class="bar-row"><span class="bar-label">Cost Reduction</span><div class="bar-track"><div class="bar-fill" style="width:55%; animation-delay:0.9s"></div></div><span class="bar-pct">-55%</span></div>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-box"><div class="kpi-val" style="font-size:1.1rem;">Free</div><div class="kpi-key">Initial consultation</div></div>
+        <div class="kpi-box"><div class="kpi-val" style="font-size:1.1rem;">Clear</div><div class="kpi-key">Upfront pricing</div></div>
+        <div class="kpi-box"><div class="kpi-val" style="font-size:1.1rem;">NDA</div><div class="kpi-key">Data protected always</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section class="industries-section" id="industries">
+  <div class="industries-header reveal">
+    <span class="section-label">Who We Serve</span>
+    <h2 class="section-title">Deep Domain Expertise<br>Across Industries</h2>
+    <p class="section-desc">Our consultants bring specialized knowledge to every sector they serve — not just technical skills.</p>
+  </div>
+  <div class="industries-grid">
+    <div class="industry-card reveal"><span class="industry-emoji">🏥</span><h4>Healthcare & Life Sciences</h4><p>Clinical trials, patient analytics, hospital operations</p></div>
+    <div class="industry-card reveal"><span class="industry-emoji">💰</span><h4>Finance & Banking</h4><p>Risk modeling, fraud detection, algorithmic trading</p></div>
+    <div class="industry-card reveal"><span class="industry-emoji">🏭</span><h4>Manufacturing</h4><p>Predictive maintenance, quality control, supply chain</p></div>
+    <div class="industry-card reveal"><span class="industry-emoji">🛒</span><h4>Retail & eCommerce</h4><p>Demand forecasting, personalization, churn reduction</p></div>
+    <div class="industry-card reveal"><span class="industry-emoji">🏛️</span><h4>Government & Non-profit</h4><p>Policy analysis, social impact, program evaluation</p></div>
+    <div class="industry-card reveal"><span class="industry-emoji">🎓</span><h4>Research & Academia</h4><p>Statistical consulting, dissertation support, publication</p></div>
+    <div class="industry-card reveal"><span class="industry-emoji">⚡</span><h4>Energy & Utilities</h4><p>Grid optimization, consumption forecasting, ESG</p></div>
+    <div class="industry-card reveal"><span class="industry-emoji">🚚</span><h4>Logistics & Supply Chain</h4><p>Route optimization, inventory AI, demand sensing</p></div>
+  </div>
+</section>
+
+<!-- WHY WORK WITH US -->
+<section class="testimonials-section" id="testimonials">
+  <div class="testi-header reveal">
+    <span class="section-label">Why Choose Us</span>
+    <h2 class="section-title">Why Work With a<br>Boutique Consultancy?</h2>
+    <p class="section-desc" style="margin:0 auto 3rem;">We're not a faceless agency. Here's what you actually get when you work with My Consultancy from the start.</p>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="testi-quote" style="font-size:2rem;">🎯</div>
+      <p class="testi-text" style="font-style:normal;">You work directly with the expert — not a junior analyst. Every engagement gets senior-level thinking, from scoping call to final delivery.</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,#00d4ff,#0077aa);">DS</div>
+        <div><div class="testi-name">Direct Senior Access</div><div class="testi-role">No middlemen, no handoffs</div></div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-quote" style="font-size:2rem;">💬</div>
+      <p class="testi-text" style="font-style:normal;">We're a new business — which means we're hungry to earn your trust and your referral. Your success is our portfolio, and we treat it that way.</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,#7c3aed,#4f1fb5);">MO</div>
+        <div><div class="testi-name">Motivated to Deliver</div><div class="testi-role">Your win is our reputation</div></div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-quote" style="font-size:2rem;">🔒</div>
+      <p class="testi-text" style="font-style:normal;">Every engagement starts with a signed NDA. Your data, your models, and your business logic stay 100% confidential — always.</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,#00d4ff,#7c3aed);">NDA</div>
+        <div><div class="testi-name">Privacy First</div><div class="testi-role">Signed NDA on every project</div></div>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top:3rem;" class="reveal">
+    <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:1.2rem;">We're actively taking on our first clients. Early clients get priority attention and introductory rates.</p>
+    <a href="#contact" class="btn-primary">Claim Your Free Consultation →</a>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="faq-inner">
+    <div class="reveal">
+      <span class="section-label">FAQ</span>
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <p class="section-desc">Have a question not listed here? Reach out and we'll respond within 24 hours.</p>
+      <br/>
+      <a href="#contact" class="btn-secondary" style="margin-top:1rem;">Contact Us →</a>
+    </div>
+      <div class="faq-list">
+        <div class="faq-item reveal">
+          <div class="faq-q" onclick="toggleFaq(this)">Are you a new company? Can I trust you? <div class="faq-icon">+</div></div>
+          <div class="faq-a">Yes — we're newly launched. But that's actually a reason to trust us more: we're personally invested in doing excellent work to build our reputation. Every project is handled by senior experts, not junior staff, and we sign an NDA before any work begins.</div>
+        </div>
+        <div class="faq-item reveal">
+          <div class="faq-q" onclick="toggleFaq(this)">How much does a project cost? <div class="faq-icon">+</div></div>
+          <div class="faq-a">It depends on scope and complexity. We offer hourly rates for small consulting tasks, and fixed-fee packages for defined projects. We always provide a clear, itemized quote after a free scoping call — no surprises.</div>
+        </div>
+        <div class="faq-item reveal">
+          <div class="faq-q" onclick="toggleFaq(this)">How long does a typical project take? <div class="faq-icon">+</div></div>
+          <div class="faq-a">A focused analytics report or dashboard can be delivered in 1–3 weeks. More complex ML or AI projects typically run 4–12 weeks. We agree on a timeline during scoping and keep you updated throughout.</div>
+        </div>
+        <div class="faq-item reveal">
+          <div class="faq-q" onclick="toggleFaq(this)">How do you protect my data? <div class="faq-icon">+</div></div>
+          <div class="faq-a">We sign a mutual NDA before any data is shared. All data is handled with strict access controls, encrypted transfers, and we adhere to GDPR and HIPAA best practices where applicable. Your data is never shared with third parties.</div>
+        </div>
+        <div class="faq-item reveal">
+          <div class="faq-q" onclick="toggleFaq(this)">Do you work with small businesses and startups? <div class="faq-icon">+</div></div>
+          <div class="faq-a">Absolutely — in fact, that's our sweet spot right now. We have flexible engagement models designed to fit startup budgets, and we love working with organizations at the early stage of building their data capabilities.</div>
+        </div>
+        <div class="faq-item reveal">
+          <div class="faq-q" onclick="toggleFaq(this)">What does the free consultation include? <div class="faq-icon">+</div></div>
+          <div class="faq-a">A free 30-minute call where we listen to your challenge, assess what data work is needed, and share an honest view of what we can do and how long it will take. No pitch, no pressure — just a real conversation.</div>
+        </div>
+      </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section style="padding:7rem 5%; background:var(--bg-card); border-top:1px solid var(--border);" id="pricing">
+  <div style="text-align:center; margin-bottom:4rem;" class="reveal">
+    <span class="section-label">Pricing</span>
+    <h2 class="section-title">Simple, Transparent Pricing</h2>
+    <p class="section-desc" style="margin:0 auto;">No hidden fees. No surprises. We offer three flexible models to fit your needs and budget.</p>
+  </div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; max-width:1000px; margin:0 auto;">
+    <div class="service-card reveal" style="text-align:center;">
+      <div style="font-size:2rem; margin-bottom:1rem;">⏱️</div>
+      <h3>Hourly Consulting</h3>
+      <div style="font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:var(--accent); margin:1rem 0;">$100–$250<span style="font-size:1rem; color:var(--text-muted);">/hr</span></div>
+      <p>Perfect for ad-hoc questions, quick analyses, or getting expert guidance on a specific problem. Pay only for the time you need.</p>
+      <a href="#contact" class="service-link" style="justify-content:center;">Get a Quote →</a>
+    </div>
+    <div class="service-card reveal" style="text-align:center; border-color:rgba(0,212,255,0.4);">
+      <div style="font-size:2rem; margin-bottom:1rem;">📦</div>
+      <h3>Project-Based</h3>
+      <div style="font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:var(--accent); margin:1rem 0;">$500–$5,000<span style="font-size:1rem; color:var(--text-muted);">+</span></div>
+      <p>Fixed-fee packages for clearly scoped projects — dashboards, ML models, AI automation, chatbots. Full quote provided after a free scoping call.</p>
+      <a href="#contact" class="service-link" style="justify-content:center;">Get a Quote →</a>
+    </div>
+    <div class="service-card reveal" style="text-align:center;">
+      <div style="font-size:2rem; margin-bottom:1rem;">🔄</div>
+      <h3>Monthly Retainer</h3>
+      <div style="font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:var(--accent); margin:1rem 0;">Custom<span style="font-size:1rem; color:var(--text-muted);"> /mo</span></div>
+      <p>Ongoing support, monitoring, and iteration for clients who need a dedicated AI and data partner every month. Best value for long-term partnerships.</p>
+      <a href="#contact" class="service-link" style="justify-content:center;">Let's Talk →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section reveal">
+  <span class="section-label">Let's Get Started</span>
+  <h2 class="section-title">Be One of Our<br>First Clients</h2>
+  <p class="section-desc">We're actively building our client base and offering introductory rates to early partners. Book a free 30-minute call — no commitment, no pressure.</p>
+  <a href="#contact" class="btn-primary" style="font-size:1.05rem; padding: 1rem 2.5rem;">Book a Free Consultation →</a>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div>
+      <div class="reveal">
+        <span class="section-label">Contact Us</span>
+        <h2 class="section-title">Let's Talk<br>About Your Business</h2>
+        <p class="section-desc">Fill in the form and we'll get back to you within one business day. Based in New Jersey — serving clients remotely worldwide.</p>
+      </div>
+      <div class="contact-info">
+        <div class="contact-detail reveal">
+          <div class="contact-icon">📧</div>
+          <div><h5>Email</h5><p>info@myconsultancy.com</p></div>
+        </div>
+        <div class="contact-detail reveal">
+          <div class="contact-icon">📞</div>
+          <div><h5>Phone</h5><p>+1 (800) 123-4567</p></div>
+        </div>
+        <div class="contact-detail reveal">
+          <div class="contact-icon">📍</div>
+          <div><h5>Location</h5><p>Available Worldwide · Remote-First</p></div>
+        </div>
+        <div class="contact-detail reveal">
+          <div class="contact-icon">🕒</div>
+          <div><h5>Response Time</h5><p>Within 1 Business Day</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form reveal">
+      <div id="formWrap">
+        <!-- 
+          ============================================
+          SETUP INSTRUCTIONS (2 minutes):
+          1. Go to https://formspree.io
+          2. Sign up for free
+          3. Click "New Form" → name it "Consultancy Contact"
+          4. Copy your form ID (looks like: xyzabcde)
+          5. Replace YOUR_FORMSPREE_ID below with your actual ID
+          ============================================
+        -->
+        <form id="contactForm" action="https://formspree.io/f/myklpbrj" method="POST">
+          <div class="form-row">
+            <div class="form-group"><label>First Name *</label><input type="text" name="first_name" placeholder="John" required/></div>
+            <div class="form-group"><label>Last Name *</label><input type="text" name="last_name" placeholder="Smith" required/></div>
+          </div>
+          <div class="form-group"><label>Work Email *</label><input type="email" name="email" placeholder="john@company.com" required/></div>
+          <div class="form-group"><label>Phone Number</label><input type="tel" name="phone" placeholder="+1 (555) 000-0000"/></div>
+          <div class="form-group"><label>Company</label><input type="text" name="company" placeholder="Your Company Name"/></div>
+          <div class="form-group">
+            <label>Service Interested In *</label>
+            <select name="service" required>
+              <option value="">Select a service...</option>
+              <option>Data Analytics & Visualization</option>
+              <option>Machine Learning & AI Models</option>
+              <option>AI Automation & Implementation</option>
+              <option>Business Intelligence (BI)</option>
+              <option>AI Chatbots & Customer Support</option>
+              <option>Predictive Analytics</option>
+              <option>AI Strategy & Roadmap</option>
+              <option>Training & Upskilling</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Message</label><textarea name="message" placeholder="Tell us about your data challenge or project..."></textarea></div>
+          <!-- Honeypot spam protection -->
+          <input type="text" name="_gotcha" style="display:none"/>
+          <!-- After submit, stay on page -->
+          <input type="hidden" name="_next" value=""/>
+          <button type="submit" class="form-submit" id="submitBtn">Send Message →</button>
+        </form>
+      </div>
+      <div class="form-success" id="formSuccess">
+        ✅ Thank you! We've received your message and will be in touch within one business day.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">Shana <span>Data & AI</span></a>
+      <p>Shana Data & AI Consulting LLC — a New Jersey-based consultancy helping businesses adopt AI and data solutions to grow smarter, faster, and more efficiently.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#services">Data Analytics & Visualization</a></li>
+        <li><a href="#services">Machine Learning & AI</a></li>
+        <li><a href="#services">AI Automation</a></li>
+        <li><a href="#services">AI Chatbots</a></li>
+        <li><a href="#services">Predictive Analytics</a></li>
+        <li><a href="#services">BI Solutions</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#process">Our Process</a></li>
+        <li><a href="#industries">Industries</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Legal</h5>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Cookie Policy</a></li>
+        <li><a href="#contact">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Shana Data & AI Consulting LLC. All rights reserved. · New Jersey, USA</span>
+    <span>Built with precision &amp; purpose.</span>
+  </div>
+</footer>
+
+<script>
+  // ── Mobile menu ──
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+
+  // ── Navbar shrink on scroll ──
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    nav.style.padding = window.scrollY > 60 ? '0.8rem 5%' : '1.2rem 5%';
+  });
+
+  // ── Scroll reveal ──
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // ── FAQ accordion ──
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // ── Form submit via Formspree ──
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(contactForm.action, {
+          method: 'POST',
+          body: new FormData(contactForm),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          document.getElementById('formWrap').style.display = 'none';
+          document.getElementById('formSuccess').style.display = 'block';
+        } else {
+          btn.textContent = 'Something went wrong. Try again.';
+          btn.disabled = false;
+          btn.style.background = '#ef4444';
+        }
+      } catch (err) {
+        btn.textContent = 'Network error. Try again.';
+        btn.disabled = false;
+        btn.style.background = '#ef4444';
+      }
+    });
+  }
+
+  // ── Smooth anchor close menu ──
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', () => { document.getElementById('navLinks').classList.remove('open'); });
+  });
+</script>
+</body>
+</html>
