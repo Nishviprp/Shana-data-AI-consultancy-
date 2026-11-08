@@ -1,1251 +1,713 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Shana AI — E-Commerce Growth & Supply Chain Automation</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
-<style>
-  :root {
-    --bg-dark: #080c14;
-    --bg-card: #0d1220;
-    --bg-mid: #111827;
-    --accent: #00d4ff;
-    --accent2: #7c3aed;
-    --accent-glow: rgba(0,212,255,0.18);
-    --text-primary: #f0f4ff;
-    --text-muted: #8b9ab7;
-    --text-light: #c8d4ed;
-    --border: rgba(0,212,255,0.12);
-    --white: #ffffff;
-    --gradient-hero: linear-gradient(135deg, #080c14 0%, #0d1a2f 50%, #080c14 100%);
-    --success: #10b981;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg-dark);
-    color: var(--text-primary);
-    overflow-x: hidden;
-    line-height: 1.7;
-  }
-
-  /* ── NOISE OVERLAY ── */
-  body::before {
-    content: '';
-    position: fixed; inset: 0; z-index: 0; pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    opacity: 0.35;
-  }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.2rem 5%;
-    background: rgba(8,12,20,0.82);
-    backdrop-filter: blur(18px);
-    border-bottom: 1px solid var(--border);
-    transition: padding 0.3s;
-  }
-
-  .nav-logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800; font-size: 1.35rem;
-    color: var(--white);
-    letter-spacing: -0.02em;
-    text-decoration: none;
-  }
-  .nav-logo span { color: var(--accent); }
-
-  .nav-links {
-    display: flex; gap: 2.2rem; list-style: none;
-  }
-  .nav-links a {
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 500;
-    letter-spacing: 0.03em;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--accent); }
-
-  .nav-cta {
-    background: var(--accent);
-    color: var(--bg-dark) !important;
-    padding: 0.5rem 1.3rem;
-    border-radius: 6px;
-    font-weight: 600 !important;
-    transition: box-shadow 0.2s, transform 0.2s !important;
-  }
-  .nav-cta:hover {
-    box-shadow: 0 0 20px var(--accent-glow);
-    transform: translateY(-1px);
-    color: var(--bg-dark) !important;
-  }
-
-  .hamburger {
-    display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px;
-  }
-  .hamburger span {
-    display: block; width: 24px; height: 2px;
-    background: var(--text-primary); border-radius: 2px;
-    transition: all 0.3s;
-  }
-
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
-    display: flex; align-items: center; justify-content: center;
-    padding: 8rem 5% 5rem;
-    background: var(--gradient-hero);
-    position: relative; overflow: hidden;
-    text-align: center;
-  }
-
-  /* mesh blobs */
-  .blob {
-    position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none;
-    animation: blobFloat 8s ease-in-out infinite alternate;
-  }
-  .blob1 { width: 500px; height: 500px; background: rgba(0,212,255,0.07); top: -100px; left: -150px; animation-delay: 0s; }
-  .blob2 { width: 400px; height: 400px; background: rgba(124,58,237,0.09); bottom: -80px; right: -100px; animation-delay: -3s; }
-  .blob3 { width: 300px; height: 300px; background: rgba(0,212,255,0.05); top: 40%; left: 50%; transform: translate(-50%,-50%); animation-delay: -5s; }
-
-  @keyframes blobFloat {
-    from { transform: translateY(0) scale(1); }
-    to   { transform: translateY(-30px) scale(1.05); }
-  }
-
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(0,212,255,0.08);
-    border: 1px solid rgba(0,212,255,0.25);
-    border-radius: 50px;
-    padding: 0.4rem 1.1rem;
-    font-size: 0.78rem; font-weight: 500;
-    color: var(--accent);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 2rem;
-    animation: fadeUp 0.8s ease both;
-  }
-  .hero-badge::before {
-    content: ''; width: 7px; height: 7px; border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 8px var(--accent);
-    animation: pulse 1.5s ease infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
-
-  .hero h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(2.8rem, 7vw, 5.5rem);
-    font-weight: 800;
-    line-height: 1.07;
-    letter-spacing: -0.03em;
-    color: var(--white);
-    margin-bottom: 1.5rem;
-    animation: fadeUp 0.9s ease 0.1s both;
-  }
-  .hero h1 .accent { color: var(--accent); }
-  .hero h1 .accent2 { color: var(--accent2); background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-
-  .hero-sub {
-    font-size: clamp(1rem, 2vw, 1.2rem);
-    color: var(--text-muted);
-    max-width: 620px; margin: 0 auto 2.8rem;
-    line-height: 1.75;
-    animation: fadeUp 1s ease 0.2s both;
-  }
-
-  .hero-btns {
-    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
-    animation: fadeUp 1s ease 0.35s both;
-  }
-
-  .btn-primary {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--accent); color: var(--bg-dark);
-    padding: 0.85rem 2rem; border-radius: 8px;
-    font-weight: 700; font-size: 0.95rem;
-    text-decoration: none;
-    transition: box-shadow 0.3s, transform 0.2s;
-    border: none; cursor: pointer;
-  }
-  .btn-primary:hover { box-shadow: 0 0 30px rgba(0,212,255,0.35); transform: translateY(-2px); }
-
-  .btn-secondary {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: transparent; color: var(--text-primary);
-    padding: 0.85rem 2rem; border-radius: 8px;
-    font-weight: 500; font-size: 0.95rem;
-    text-decoration: none;
-    border: 1px solid var(--border);
-    transition: border-color 0.3s, color 0.3s, transform 0.2s;
-    cursor: pointer;
-  }
-  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
-
-  /* stats strip */
-  .stats-strip {
-    display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;
-    margin-top: 5rem;
-    animation: fadeUp 1s ease 0.5s both;
-  }
-  .stat { text-align: center; }
-  .stat-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 2.2rem; font-weight: 800;
-    color: var(--white);
-    line-height: 1;
-  }
-  .stat-num span { color: var(--accent); }
-  .stat-label { font-size: 0.82rem; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
-
-  @keyframes fadeUp { from { opacity:0; transform: translateY(24px); } to { opacity:1; transform: translateY(0); } }
-
-  /* ── SECTIONS ── */
-  section { position: relative; z-index: 1; }
-
-  .section-label {
-    display: inline-block;
-    font-size: 0.75rem; font-weight: 600;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0.9rem;
-  }
-
-  .section-title {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(1.9rem, 4vw, 3rem);
-    font-weight: 800;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    color: var(--white);
-    margin-bottom: 1rem;
-  }
-
-  .section-desc {
-    color: var(--text-muted);
-    font-size: 1.05rem;
-    max-width: 550px;
-    line-height: 1.75;
-  }
-
-  /* ── LOGOS ── */
-  .logos-section {
-    padding: 3.5rem 5%;
-    background: var(--bg-card);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    text-align: center;
-  }
-  .logos-label { font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2rem; }
-  .logos-track {
-    display: flex; gap: 3rem; align-items: center; justify-content: center; flex-wrap: wrap;
-  }
-  .logo-item {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700; font-size: 1rem;
-    color: var(--text-muted);
-    letter-spacing: 0.05em;
-    transition: color 0.3s;
-    padding: 0.3rem 0.8rem;
-    border: 1px solid transparent;
-    border-radius: 6px;
-  }
-  .logo-item:hover { color: var(--accent); border-color: var(--border); }
-
-  /* ── SERVICES ── */
-  .services-section {
-    padding: 7rem 5%;
-    background: var(--bg-dark);
-  }
-  .services-header { margin-bottom: 4rem; }
-
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .service-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 2.2rem;
-    position: relative; overflow: hidden;
-    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-    cursor: default;
-  }
-  .service-card::before {
-    content: ''; position: absolute;
-    top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    opacity: 0; transition: opacity 0.3s;
-  }
-  .service-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(0,212,255,0.3);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
-  }
-  .service-card:hover::before { opacity: 1; }
-
-  .service-icon {
-    width: 52px; height: 52px;
-    background: rgba(0,212,255,0.08);
-    border: 1px solid rgba(0,212,255,0.2);
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.5rem;
-    margin-bottom: 1.4rem;
-    transition: background 0.3s;
-  }
-  .service-card:hover .service-icon { background: rgba(0,212,255,0.15); }
-
-  .service-card h3 {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.15rem; font-weight: 700;
-    color: var(--white);
-    margin-bottom: 0.65rem;
-  }
-  .service-card p { color: var(--text-muted); font-size: 0.93rem; line-height: 1.7; }
-
-  .service-link {
-    display: inline-flex; align-items: center; gap: 6px;
-    margin-top: 1.3rem;
-    color: var(--accent); font-size: 0.88rem; font-weight: 600;
-    text-decoration: none;
-    transition: gap 0.2s;
-  }
-  .service-link:hover { gap: 10px; }
-
-  /* ── HOW IT WORKS ── */
-  .process-section {
-    padding: 7rem 5%;
-    background: var(--bg-mid);
-  }
-  .process-inner {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
-  }
-  .process-steps { display: flex; flex-direction: column; gap: 1.8rem; margin-top: 2.5rem; }
-
-  .step {
-    display: flex; gap: 1.2rem; align-items: flex-start;
-    padding: 1.4rem 1.6rem;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    transition: border-color 0.3s, transform 0.3s;
-    cursor: default;
-  }
-  .step:hover { border-color: rgba(0,212,255,0.3); transform: translateX(5px); }
-  .step-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.5rem; font-weight: 800;
-    color: var(--accent); opacity: 0.5;
-    min-width: 36px; line-height: 1;
-    margin-top: 2px;
-  }
-  .step-body h4 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; color: var(--white); margin-bottom: 0.3rem; }
-  .step-body p { font-size: 0.89rem; color: var(--text-muted); }
-
-  .process-visual {
-    position: relative;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 2.5rem;
-    overflow: hidden;
-  }
-  .process-visual::after {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse at top right, rgba(124,58,237,0.12), transparent 60%);
-    pointer-events: none;
-  }
-
-  .visual-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 1.5rem; }
-  .bar-chart { display: flex; flex-direction: column; gap: 1rem; }
-  .bar-row { display: flex; align-items: center; gap: 1rem; }
-  .bar-label { font-size: 0.8rem; color: var(--text-muted); width: 80px; flex-shrink: 0; }
-  .bar-track { flex: 1; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
-  .bar-fill {
-    height: 100%; border-radius: 4px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    transform-origin: left;
-    animation: barGrow 1.5s ease forwards;
-    transform: scaleX(0);
-  }
-  @keyframes barGrow { to { transform: scaleX(1); } }
-  .bar-pct { font-size: 0.78rem; font-weight: 600; color: var(--accent); width: 36px; text-align: right; }
-
-  .kpi-row { display: flex; gap: 1rem; margin-top: 2rem; }
-  .kpi-box {
-    flex: 1; background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.12);
-    border-radius: 10px; padding: 1rem;
-    text-align: center;
-  }
-  .kpi-val { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--white); }
-  .kpi-val span { color: var(--accent); }
-  .kpi-key { font-size: 0.72rem; color: var(--text-muted); margin-top: 3px; }
-
-  /* ── INDUSTRIES ── */
-  .industries-section {
-    padding: 7rem 5%;
-    background: var(--bg-dark);
-  }
-  .industries-header { text-align: center; margin-bottom: 4rem; }
-  .industries-header .section-desc { margin: 0 auto; }
-
-  .industries-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.2rem;
-  }
-  .industry-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px; padding: 1.8rem 1.5rem;
-    text-align: center;
-    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
-    cursor: default;
-  }
-  .industry-card:hover {
-    border-color: rgba(0,212,255,0.35);
-    transform: translateY(-4px);
-    box-shadow: 0 12px 35px rgba(0,0,0,0.3);
-  }
-  .industry-emoji { font-size: 2.2rem; margin-bottom: 1rem; display: block; }
-  .industry-card h4 { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--white); margin-bottom: 0.4rem; }
-  .industry-card p { font-size: 0.83rem; color: var(--text-muted); }
-
-  /* ── TESTIMONIALS ── */
-  .testimonials-section {
-    padding: 7rem 5%;
-    background: var(--bg-mid);
-    text-align: center;
-  }
-  .testi-header { margin-bottom: 4rem; }
-
-  .testi-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    text-align: left;
-  }
-  .testi-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px; padding: 2rem;
-    position: relative; overflow: hidden;
-    transition: transform 0.3s, border-color 0.3s;
-  }
-  .testi-card:hover { transform: translateY(-4px); border-color: rgba(0,212,255,0.25); }
-  .testi-quote {
-    font-size: 2.5rem; color: var(--accent); opacity: 0.3;
-    font-family: Georgia, serif; line-height: 1;
-    margin-bottom: 0.8rem;
-  }
-  .testi-text {
-    font-size: 0.93rem; color: var(--text-light); line-height: 1.75;
-    margin-bottom: 1.5rem;
-    font-style: italic;
-  }
-  .testi-author { display: flex; align-items: center; gap: 0.9rem; }
-  .testi-avatar {
-    width: 42px; height: 42px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.95rem;
-    color: var(--white); flex-shrink: 0;
-  }
-  .testi-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; color: var(--white); }
-  .testi-role { font-size: 0.78rem; color: var(--text-muted); }
-
-  /* ── FAQ ── */
-  .faq-section {
-    padding: 7rem 5%;
-    background: var(--bg-dark);
-  }
-  .faq-inner { display: grid; grid-template-columns: 1fr 1.5fr; gap: 5rem; align-items: start; }
-  .faq-list { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
-
-  .faq-item {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px; overflow: hidden;
-  }
-  .faq-q {
-    padding: 1.2rem 1.5rem;
-    display: flex; justify-content: space-between; align-items: center;
-    cursor: pointer;
-    font-family: 'Syne', sans-serif;
-    font-weight: 600; font-size: 0.95rem; color: var(--white);
-    transition: color 0.2s;
-    user-select: none;
-  }
-  .faq-q:hover { color: var(--accent); }
-  .faq-icon {
-    width: 22px; height: 22px;
-    border: 1px solid var(--border); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1rem; color: var(--accent);
-    transition: transform 0.3s;
-    flex-shrink: 0;
-  }
-  .faq-item.open .faq-icon { transform: rotate(45deg); }
-  .faq-a {
-    max-height: 0; overflow: hidden;
-    transition: max-height 0.4s ease, padding 0.3s;
-    padding: 0 1.5rem;
-    font-size: 0.9rem; color: var(--text-muted); line-height: 1.75;
-  }
-  .faq-item.open .faq-a { max-height: 300px; padding: 0 1.5rem 1.3rem; }
-
-  /* ── CTA ── */
-  .cta-section {
-    padding: 7rem 5%;
-    background: var(--bg-card);
-    border-top: 1px solid var(--border);
-    text-align: center;
-    position: relative; overflow: hidden;
-  }
-  .cta-section::before {
-    content: ''; position: absolute;
-    top: 50%; left: 50%; transform: translate(-50%,-50%);
-    width: 600px; height: 300px;
-    background: radial-gradient(ellipse, rgba(0,212,255,0.08), transparent 70%);
-    pointer-events: none;
-  }
-  .cta-section .section-title { margin-bottom: 1rem; }
-  .cta-section .section-desc { margin: 0 auto 2.5rem; max-width: 480px; }
-
-  /* ── CONTACT FORM ── */
-  .contact-section {
-    padding: 7rem 5%;
-    background: var(--bg-dark);
-  }
-  .contact-inner { display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem; align-items: start; }
-  .contact-info { margin-top: 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
-  .contact-detail {
-    display: flex; gap: 1rem; align-items: flex-start;
-  }
-  .contact-icon {
-    width: 42px; height: 42px; flex-shrink: 0;
-    background: rgba(0,212,255,0.07);
-    border: 1px solid rgba(0,212,255,0.18);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem;
-  }
-  .contact-detail h5 { font-family: 'Syne', sans-serif; font-size: 0.88rem; font-weight: 700; color: var(--white); }
-  .contact-detail p { font-size: 0.87rem; color: var(--text-muted); }
-
-  .contact-form {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 2.5rem;
-  }
-  .form-group { margin-bottom: 1.3rem; }
-  .form-group label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.45rem; letter-spacing: 0.04em; }
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    width: 100%;
-    background: var(--bg-dark);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    color: var(--text-primary);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.93rem;
-    transition: border-color 0.25s, box-shadow 0.25s;
-    outline: none;
-  }
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(0,212,255,0.08);
-  }
-  .form-group textarea { resize: vertical; min-height: 120px; }
-  .form-group select option { background: var(--bg-dark); }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-
-  .form-submit {
-    width: 100%; padding: 0.95rem;
-    background: var(--accent); color: var(--bg-dark);
-    border: none; border-radius: 8px;
-    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem;
-    cursor: pointer;
-    transition: box-shadow 0.3s, transform 0.2s;
-  }
-  .form-submit:hover { box-shadow: 0 0 25px rgba(0,212,255,0.3); transform: translateY(-1px); }
-
-  .form-success {
-    display: none; text-align: center; padding: 1.5rem;
-    color: var(--accent); font-family: 'Syne', sans-serif; font-weight: 600;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    background: var(--bg-card);
-    border-top: 1px solid var(--border);
-    padding: 4rem 5% 2rem;
-  }
-  .footer-top {
-    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem;
-    margin-bottom: 3rem;
-  }
-  .footer-brand .nav-logo { font-size: 1.3rem; display: inline-block; margin-bottom: 1rem; }
-  .footer-brand p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.75; max-width: 260px; }
-
-  .footer-col h5 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.88rem; color: var(--white); margin-bottom: 1.2rem; letter-spacing: 0.05em; text-transform: uppercase; }
-  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
-  .footer-col ul li a { color: var(--text-muted); text-decoration: none; font-size: 0.87rem; transition: color 0.2s; }
-  .footer-col ul li a:hover { color: var(--accent); }
-
-  .footer-bottom {
-    border-top: 1px solid var(--border);
-    padding-top: 1.8rem;
-    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
-    font-size: 0.82rem; color: var(--text-muted);
-  }
-  .footer-bottom a { color: var(--text-muted); text-decoration: none; }
-  .footer-bottom a:hover { color: var(--accent); }
-
-  /* ── IMAGES ── */
-  .hero-img-wrap {
-    position: relative; flex-shrink: 0;
-    width: 420px; height: 420px;
-  }
-  .hero-img-wrap img {
-    width: 100%; height: 100%; object-fit: cover;
-    border-radius: 24px;
-    border: 1px solid var(--border);
-    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
-  }
-  .hero-img-wrap::before {
-    content: '';
-    position: absolute; inset: -2px;
-    border-radius: 26px;
-    background: linear-gradient(135deg, rgba(0,212,255,0.4), rgba(124,58,237,0.3), transparent 60%);
-    z-index: -1;
-  }
-  .hero-img-badge {
-    position: absolute; bottom: -18px; left: -18px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px; padding: 0.9rem 1.2rem;
-    display: flex; align-items: center; gap: 0.7rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-  }
-  .hero-img-badge-icon { font-size: 1.4rem; }
-  .hero-img-badge-text { font-family: 'Syne', sans-serif; font-size: 0.82rem; font-weight: 700; color: var(--white); line-height: 1.3; }
-  .hero-img-badge-text span { color: var(--accent); display: block; font-size: 1rem; }
-
-  /* hero split layout */
-  .hero-inner {
-    display: flex; align-items: center; gap: 4rem; justify-content: center;
-    width: 100%; flex-wrap: wrap;
-  }
-  .hero-content { flex: 1; min-width: 300px; text-align: left; }
-  .hero-content .hero-btns { justify-content: flex-start; }
-  .hero-content .stats-strip { justify-content: flex-start; }
-
-  /* about image section */
-  .about-section {
-    padding: 7rem 5%;
-    background: var(--bg-card);
-    border-top: 1px solid var(--border);
-  }
-  .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-  .about-img-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
-  }
-  .about-img-grid img {
-    width: 100%; border-radius: 14px; object-fit: cover;
-    border: 1px solid var(--border);
-    transition: transform 0.4s, box-shadow 0.4s;
-  }
-  .about-img-grid img:hover { transform: scale(1.03); box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
-  .about-img-grid img:first-child { grid-row: span 2; height: 340px; }
-  .about-img-grid img:not(:first-child) { height: 160px; }
-  .about-points { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
-  .about-point { display: flex; align-items: flex-start; gap: 0.8rem; }
-  .about-point-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-top: 8px; flex-shrink: 0; box-shadow: 0 0 8px var(--accent); }
-  .about-point p { font-size: 0.92rem; color: var(--text-muted); }
-  .about-point strong { color: var(--text-primary); }
-
-  /* viz image strip */
-  .viz-strip {
-    padding: 5rem 5%;
-    background: var(--bg-mid);
-    border-top: 1px solid var(--border);
-  }
-  .viz-strip-header { text-align: center; margin-bottom: 3rem; }
-  .viz-images {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
-  }
-  .viz-img-card {
-    border-radius: 16px; overflow: hidden;
-    border: 1px solid var(--border);
-    position: relative;
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: default;
-  }
-  .viz-img-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
-  .viz-img-card img { width: 100%; height: 220px; object-fit: cover; display: block; }
-  .viz-img-label {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    background: linear-gradient(to top, rgba(8,12,20,0.95), transparent);
-    padding: 2rem 1.2rem 1rem;
-    font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.88rem;
-    color: var(--white);
-  }
-
-  /* ── SCROLL REVEAL ── */
-  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-
-  /* ── MOBILE ── */
-  @media (max-width: 900px) {
-    .process-inner { grid-template-columns: 1fr; }
-    .faq-inner { grid-template-columns: 1fr; }
-    .contact-inner { grid-template-columns: 1fr; }
-    .footer-top { grid-template-columns: 1fr 1fr; }
-    .about-inner { grid-template-columns: 1fr; }
-    .viz-images { grid-template-columns: 1fr 1fr; }
-    .hero-img-wrap { width: 320px; height: 320px; }
-    .hero-inner { flex-direction: column; text-align: center; }
-    .hero-content { text-align: center; }
-    .hero-content .hero-btns { justify-content: center; }
-    .hero-content .stats-strip { justify-content: center; }
-  }
-  @media (max-width: 640px) {
-    .nav-links { display: none; }
-    .hamburger { display: flex; }
-    .nav-links.open {
-      display: flex; flex-direction: column;
-      position: fixed; top: 64px; left: 0; right: 0;
-      background: rgba(8,12,20,0.97);
-      padding: 2rem; gap: 1.5rem;
-      border-bottom: 1px solid var(--border);
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shana AI Labs | Lead Recovery & Automation for HVAC and Plumbing</title>
+  <meta name="description" content="Shana AI Labs helps HVAC and plumbing businesses respond to leads faster with missed-call follow-up, lead capture, estimate reminders, and practical business automation.">
+  <meta name="theme-color" content="#080d18">
+  <meta property="og:title" content="Shana AI Labs | Turn More Inquiries Into Booked Jobs">
+  <meta property="og:description" content="Practical AI and workflow automation for HVAC and plumbing businesses. Capture leads, follow up faster, and reduce manual admin.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://shanaailabs.com/">
+  <link rel="canonical" href="https://shanaailabs.com/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080d18;
+      --bg-soft: #0d1423;
+      --panel: #111b2d;
+      --panel-2: #142139;
+      --cyan: #55d6e8;
+      --cyan-soft: rgba(85,214,232,.12);
+      --violet: #9277f7;
+      --text: #f3f7ff;
+      --muted: #a4b1c7;
+      --line: rgba(164,190,220,.15);
+      --green: #66d6a5;
+      --radius: 18px;
+      --max: 1160px;
     }
-    .stats-strip { gap: 2rem; }
-    .footer-top { grid-template-columns: 1fr; }
-    .form-row { grid-template-columns: 1fr; }
-  }
-</style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: "DM Sans", sans-serif; line-height: 1.7;
+      overflow-x: hidden;
+    }
+    a { color: inherit; }
+    button, input, select, textarea { font: inherit; }
+    .container { width: min(var(--max), 90%); margin: 0 auto; }
+    .section { padding: 100px 0; position: relative; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 9px;
+      color: var(--cyan); font-size: .76rem; font-weight: 700;
+      letter-spacing: .13em; text-transform: uppercase; margin-bottom: 17px;
+    }
+    .eyebrow:before {
+      content: ""; width: 7px; height: 7px; border-radius: 50%;
+      background: var(--cyan); box-shadow: 0 0 14px var(--cyan);
+    }
+    h1,h2,h3,h4 { font-family: "Manrope", sans-serif; letter-spacing: -.035em; }
+    h1 { font-size: clamp(2.7rem, 6.2vw, 5.35rem); line-height: 1.06; font-weight: 800; }
+    h2 { font-size: clamp(2rem, 4vw, 3.35rem); line-height: 1.13; font-weight: 800; }
+    h3 { font-size: 1.18rem; line-height: 1.35; }
+    p { color: var(--muted); }
+    .gradient-text {
+      background: linear-gradient(100deg, var(--cyan), #9b91ff 85%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .section-intro { max-width: 650px; margin-bottom: 48px; }
+    .section-intro p { font-size: 1.05rem; margin-top: 17px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      min-height: 52px; padding: 13px 22px; border-radius: 10px;
+      text-decoration: none; font-weight: 700; font-size: .94rem;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+      border: 1px solid transparent; cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--cyan); color: #06111b; box-shadow: 0 10px 30px rgba(85,214,232,.16); }
+    .btn-primary:hover { box-shadow: 0 14px 36px rgba(85,214,232,.27); }
+    .btn-secondary { border-color: var(--line); color: var(--text); background: rgba(255,255,255,.025); }
+    .btn-secondary:hover { border-color: rgba(85,214,232,.55); }
+    .arrow { font-size: 1.1rem; line-height: 1; }
+
+    /* Navigation */
+    .site-header {
+      position: fixed; inset: 0 0 auto; z-index: 100;
+      background: rgba(8,13,24,.82); backdrop-filter: blur(18px);
+      border-bottom: 1px solid transparent; transition: border-color .25s, padding .25s;
+    }
+    .site-header.scrolled { border-color: var(--line); }
+    .nav { height: 78px; display: flex; align-items: center; justify-content: space-between; gap: 25px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font: 800 1.25rem "Manrope",sans-serif; letter-spacing: -.05em; }
+    .brand-mark {
+      width: 35px; height: 35px; display: grid; place-items: center; border-radius: 10px;
+      color: #06111b; background: linear-gradient(135deg,var(--cyan),#9b91ff); font-size: 1rem;
+    }
+    .brand span:last-child { color: var(--cyan); }
+    .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: .88rem; font-weight: 600; transition: color .2s; }
+    .nav-links a:hover { color: var(--cyan); }
+    .nav-links .nav-cta { color: #06111b; background: var(--cyan); padding: 10px 16px; border-radius: 8px; }
+    .menu-toggle { display: none; border: 0; background: none; color: var(--text); font-size: 1.7rem; cursor: pointer; }
+
+    /* Hero */
+    .hero {
+      min-height: 760px; padding: 155px 0 90px; display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      background: radial-gradient(ellipse at 78% 30%, rgba(91,105,220,.18), transparent 34%),
+                  radial-gradient(ellipse at 18% 70%, rgba(55,194,213,.12), transparent 35%),
+                  linear-gradient(135deg,#080d18 0%,#0c1729 58%,#090e1a 100%);
+    }
+    .hero:after {
+      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .16;
+      background-image: linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+      background-size: 54px 54px; mask-image: linear-gradient(to bottom,black,transparent 90%);
+    }
+    .hero-grid { display: grid; grid-template-columns: 1.08fr .92fr; gap: 55px; align-items: center; position: relative; z-index: 1; }
+    .hero-copy { max-width: 690px; }
+    .hero-copy h1 { margin-bottom: 23px; }
+    .hero-copy > p { max-width: 610px; font-size: clamp(1rem,1.5vw,1.16rem); margin-bottom: 30px; }
+    .hero-actions { display: flex; gap: 13px; flex-wrap: wrap; }
+    .hero-note { display: flex; align-items: center; gap: 10px; margin-top: 28px; color: #bdc9da; font-size: .84rem; }
+    .hero-note span { color: var(--green); font-size: 1.1rem; }
+    .workflow-card {
+      background: linear-gradient(145deg,rgba(20,33,57,.96),rgba(12,21,37,.97));
+      border: 1px solid rgba(137,176,213,.2); border-radius: 22px; padding: 25px;
+      box-shadow: 0 35px 100px rgba(0,0,0,.38); position: relative;
+    }
+    .workflow-card:before {
+      content: ""; position: absolute; inset: -1px; z-index: -1; border-radius: 23px;
+      background: linear-gradient(140deg,rgba(85,214,232,.35),transparent 42%,rgba(146,119,247,.25));
+      filter: blur(14px); opacity: .55;
+    }
+    .workflow-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+    .workflow-top strong { font: 700 .95rem "Manrope",sans-serif; }
+    .live-pill { color: var(--green); font-size: .72rem; font-weight: 700; background: rgba(102,214,165,.1); padding: 6px 10px; border-radius: 20px; }
+    .workflow-sub { font-size: .78rem; margin: 18px 0 13px; color: #8292ac; text-transform: uppercase; letter-spacing: .1em; }
+    .flow-step { display: flex; gap: 13px; align-items: center; background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.06); padding: 13px; border-radius: 12px; margin-top: 10px; }
+    .flow-icon { flex: 0 0 38px; width: 38px; height: 38px; display: grid; place-items: center; border-radius: 10px; background: var(--cyan-soft); color: var(--cyan); font-size: 1.1rem; }
+    .flow-step strong { display: block; font-size: .87rem; color: var(--text); }
+    .flow-step small { display: block; color: var(--muted); font-size: .75rem; margin-top: 2px; }
+    .flow-connector { height: 13px; margin-left: 31px; border-left: 1px dashed rgba(85,214,232,.55); }
+    .workflow-foot { display: flex; gap: 10px; align-items: center; margin-top: 19px; padding: 13px; border-radius: 11px; background: rgba(102,214,165,.08); color: #b9e8d3; font-size: .8rem; }
+
+    /* Trust strip */
+    .trust-strip { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(255,255,255,.018); }
+    .trust-inner { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 17px 38px; padding: 23px 0; text-align: center; }
+    .trust-inner span { color: #c1ccdc; font-size: .86rem; font-weight: 600; }
+    .trust-inner b { color: var(--cyan); margin-right: 7px; }
+
+    /* Problem */
+    .problem-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 17px; }
+    .problem-card,.service-card,.audience-card,.reason-card,.faq-item {
+      background: linear-gradient(145deg,rgba(17,27,45,.9),rgba(12,20,35,.92));
+      border: 1px solid var(--line); border-radius: var(--radius);
+    }
+    .problem-card { padding: 25px; }
+    .card-icon { width: 45px; height: 45px; display: grid; place-items: center; border-radius: 12px; background: var(--cyan-soft); color: var(--cyan); font-size: 1.25rem; margin-bottom: 19px; }
+    .problem-card h3 { margin-bottom: 9px; }
+    .problem-card p { font-size: .9rem; }
+
+    /* Services */
+    .services-section { background: var(--bg-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    .service-card { padding: 27px; transition: transform .25s,border-color .25s; }
+    .service-card:hover,.problem-card:hover,.audience-card:hover,.reason-card:hover { transform: translateY(-4px); border-color: rgba(85,214,232,.38); }
+    .service-card { transition: transform .25s,border-color .25s; }
+    .service-card h3 { margin-bottom: 10px; }
+    .service-card p { font-size: .9rem; }
+    .service-tag { display: inline-block; color: var(--cyan); background: var(--cyan-soft); padding: 5px 9px; border-radius: 6px; font-size: .7rem; font-weight: 700; margin-top: 18px; }
+
+    /* Audience */
+    .audience-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .audience-card { padding: 26px; display: flex; gap: 17px; align-items: flex-start; transition: transform .25s,border-color .25s; }
+    .audience-symbol { flex: 0 0 49px; height: 49px; display: grid; place-items: center; border-radius: 13px; background: rgba(146,119,247,.12); color: #b6a6ff; font-size: 1.45rem; }
+    .audience-card h3 { margin-bottom: 6px; }
+    .audience-card p { font-size: .88rem; }
+
+    /* Process */
+    .process-section { background: var(--bg-soft); }
+    .process-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 15px; counter-reset: steps; }
+    .process-card { padding: 24px 20px; border-top: 1px solid rgba(85,214,232,.4); background: rgba(255,255,255,.025); border-radius: 0 0 14px 14px; }
+    .process-number { color: var(--cyan); font: 800 1.65rem "Manrope",sans-serif; margin-bottom: 23px; }
+    .process-card h3 { font-size: 1.02rem; margin-bottom: 8px; }
+    .process-card p { font-size: .85rem; }
+
+    /* Why */
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 45px; align-items: center; }
+    .why-copy p { margin-top: 18px; max-width: 560px; }
+    .reason-list { display: grid; gap: 13px; }
+    .reason-card { display: flex; align-items: flex-start; gap: 14px; padding: 19px; }
+    .check { width: 27px; height: 27px; display: grid; place-items: center; flex: 0 0 27px; border-radius: 50%; background: rgba(102,214,165,.12); color: var(--green); font-weight: 800; }
+    .reason-card strong { display: block; font-size: .93rem; margin-bottom: 3px; }
+    .reason-card p { font-size: .83rem; }
+
+    /* FAQ */
+    .faq-wrap { display: grid; grid-template-columns: .75fr 1.25fr; gap: 55px; align-items: start; }
+    .faq-list { display: grid; gap: 11px; }
+    .faq-item { overflow: hidden; }
+    .faq-question { width: 100%; background: none; border: 0; color: var(--text); text-align: left; padding: 19px 21px; display: flex; justify-content: space-between; gap: 20px; align-items: center; cursor: pointer; font-weight: 700; }
+    .faq-question span:last-child { color: var(--cyan); font-size: 1.3rem; transition: transform .2s; }
+    .faq-answer { display: none; padding: 0 21px 19px; font-size: .9rem; }
+    .faq-item.open .faq-answer { display: block; }
+    .faq-item.open .faq-question span:last-child { transform: rotate(45deg); }
+
+    /* CTA + contact */
+    .cta-band { padding: 66px 0; background: radial-gradient(ellipse at 50% 0%,rgba(85,214,232,.16),transparent 65%),var(--panel); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: center; }
+    .cta-band h2 { max-width: 760px; margin: 0 auto 14px; }
+    .cta-band p { max-width: 620px; margin: 0 auto 25px; }
+    .contact-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 55px; align-items: start; }
+    .contact-copy > p { margin-top: 17px; }
+    .contact-details { display: grid; gap: 17px; margin-top: 30px; }
+    .contact-detail { display: flex; gap: 13px; align-items: center; }
+    .contact-detail .card-icon { margin: 0; width: 42px; height: 42px; flex: 0 0 42px; }
+    .contact-detail strong { display: block; font-size: .86rem; }
+    .contact-detail a,.contact-detail span { color: var(--muted); font-size: .88rem; text-decoration: none; }
+    .contact-detail a:hover { color: var(--cyan); }
+    .contact-form { padding: 28px; background: var(--panel); border: 1px solid var(--line); border-radius: 19px; }
+    .form-heading { margin-bottom: 22px; }
+    .form-heading h3 { font-size: 1.35rem; margin-bottom: 5px; }
+    .form-heading p { font-size: .85rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; color: #c3cde0; font-size: .78rem; font-weight: 700; margin-bottom: 6px; }
+    .form-group input,.form-group select,.form-group textarea {
+      width: 100%; color: var(--text); background: #09111f; border: 1px solid rgba(164,190,220,.2);
+      border-radius: 9px; padding: 12px 13px; outline: none; font-size: .88rem;
+    }
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(85,214,232,.09); }
+    .form-group input::placeholder,.form-group textarea::placeholder { color: #687890; }
+    .form-group select option { background: #09111f; }
+    .form-group textarea { min-height: 115px; resize: vertical; }
+    .form-submit { width: 100%; }
+    .form-note { font-size: .72rem; margin-top: 12px; text-align: center; }
+    .form-success { display: none; padding: 22px; text-align: center; border-radius: 12px; background: rgba(102,214,165,.09); color: #b8efd5; }
+    .form-error { display: none; color: #ffb4b4; font-size: .85rem; margin-top: 12px; }
+
+    /* Footer */
+    footer { background: #060a12; border-top: 1px solid var(--line); padding: 55px 0 22px; }
+    .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 35px; padding-bottom: 38px; }
+    .footer-brand p { max-width: 350px; margin-top: 14px; font-size: .86rem; }
+    .footer-col h4 { font-size: .83rem; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 14px; }
+    .footer-col a { display: block; color: var(--muted); text-decoration: none; font-size: .85rem; margin: 8px 0; }
+    .footer-col a:hover { color: var(--cyan); }
+    .footer-bottom { display: flex; justify-content: space-between; gap: 15px; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 20px; color: #8190a7; font-size: .76rem; }
+    .footer-bottom a { color: #aab7ca; text-decoration: none; }
+
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .65s ease,transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *,*::before,*::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+    @media (max-width: 950px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 45px; }
+      .hero-copy { max-width: 800px; }
+      .workflow-card { max-width: 620px; }
+      .services-grid { grid-template-columns: repeat(2,1fr); }
+      .process-grid { grid-template-columns: repeat(2,1fr); }
+      .why-grid { grid-template-columns: 1fr; gap: 30px; }
+      .faq-wrap { grid-template-columns: 1fr; gap: 25px; }
+    }
+    @media (max-width: 700px) {
+      .section { padding: 75px 0; }
+      .nav { height: 70px; }
+      .menu-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 70px; left: 0; right: 0;
+        background: rgba(8,13,24,.98); border-bottom: 1px solid var(--line);
+        padding: 20px 5%; flex-direction: column; align-items: stretch; gap: 17px;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links .nav-cta { text-align: center; }
+      .hero { min-height: auto; padding: 125px 0 70px; }
+      .problem-grid,.services-grid,.audience-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .footer-brand { grid-column: 1/-1; }
+      .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+    }
+    @media (max-width: 480px) {
+      .container { width: min(var(--max), 91%); }
+      h1 { font-size: clamp(2.5rem,13vw,3.6rem); }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .hero-actions .btn { width: 100%; }
+      .workflow-card { padding: 17px; }
+      .process-grid,.form-row,.footer-top { grid-template-columns: 1fr; }
+      .footer-brand { grid-column: auto; }
+      .contact-form { padding: 20px; }
+      .footer-bottom { flex-direction: column; }
+    }
+  </style>
 </head>
 <body>
-
-<!-- NAV -->
-<nav id="navbar">
-  <a href="#" class="nav-logo">Shana <span>AI</span></a>
-  <ul class="nav-links" id="navLinks">
-    <li><a href="#services">Services</a></li>
-    <li><a href="#process">Process</a></li>
-    <li><a href="#industries">Use Cases</a></li>
-    <li><a href="#pricing">Pricing</a></li>
-    <li><a href="#faq">FAQ</a></li>
-    <li><a href="#contact" class="nav-cta">Start Now</a></li>
-  </ul>
-  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="blob blob1"></div>
-  <div class="blob blob2"></div>
-  <div class="blob blob3"></div>
-  <div class="hero-inner" style="position:relative;z-index:2;">
-    <div class="hero-content">
-      <div class="hero-badge">AI-Powered E-Commerce & Supply Chain</div>
-      <h1>Automate Your Supply Chain.<br>Scale <span class="accent2">Revenue with AI.</span></h1>
-      <p class="hero-sub">Transform your e-commerce operations with AI-driven demand forecasting, inventory automation, and revenue optimization. Increase sales by 25-40% while cutting operational costs by 50%+.</p>
-      <div class="hero-btns">
-        <a href="#contact" class="btn-primary">Book Free Strategy Call →</a>
-        <a href="#services" class="btn-secondary">See Our Solutions</a>
-      </div>
-      <div class="stats-strip">
-        <div class="stat"><div class="stat-num">40<span>%</span></div><div class="stat-label">Avg. Revenue Lift</div></div>
-        <div class="stat"><div class="stat-num">60<span>%</span></div><div class="stat-label">Supply Chain Efficiency</div></div>
-        <div class="stat"><div class="stat-num">3-6<span>mo</span></div><div class="stat-label">ROI Timeline</div></div>
-        <div class="stat"><div class="stat-num">24<span>/7</span></div><div class="stat-label">Automated Operations</div></div>
-      </div>
-    </div>
-    <div class="hero-img-wrap reveal">
-      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" alt="E-commerce automation dashboard" loading="lazy"/>
-      <div class="hero-img-badge">
-        <div class="hero-img-badge-icon">📈</div>
-        <div class="hero-img-badge-text">
-          <span>40% Revenue</span>
-          Growth in 6 Months
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- LOGOS -->
-<div class="logos-section reveal">
-  <p class="logos-label">Integrations & Platforms</p>
-  <div class="logos-track">
-    <div class="logo-item">Shopify</div>
-    <div class="logo-item">WooCommerce</div>
-    <div class="logo-item">Python</div>
-    <div class="logo-item">TensorFlow</div>
-    <div class="logo-item">Tableau</div>
-    <div class="logo-item">Power BI</div>
-    <div class="logo-item">AWS</div>
-    <div class="logo-item">PostgreSQL</div>
-  </div>
-</div>
-
-<!-- ABOUT WITH IMAGES -->
-<section class="about-section">
-  <div class="about-inner">
-    <div class="about-img-grid reveal">
-      <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&q=80" alt="E-commerce operations" loading="lazy"/>
-      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80" alt="Analytics dashboard" loading="lazy"/>
-      <img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=600&q=80" alt="Supply chain management" loading="lazy"/>
-    </div>
-    <div class="reveal">
-      <span class="section-label">What We Do</span>
-      <h2 class="section-title">AI Built for<br>E-Commerce Success</h2>
-      <p class="section-desc">Shana AI specializes in helping e-commerce businesses and supply chain operations leverage artificial intelligence to drive growth, reduce waste, and automate operations — without requiring expensive in-house data teams.</p>
-      <p class="section-desc" style="margin-top:1rem;">We combine expertise in e-commerce metrics, supply chain optimization, and production-grade AI to deliver solutions that work immediately and scale as you grow.</p>
-      <div class="about-points">
-        <div class="about-point"><div class="about-point-dot"></div><p><strong>Direct Expert Access</strong> — Work directly with experienced AI consultants, not junior staff or templates.</p></div>
-        <div class="about-point"><div class="about-point-dot"></div><p><strong>E-Commerce Focused</strong> — We speak your language: AOV, LTV, churn, inventory turnover, and fulfillment speed.</p></div>
-        <div class="about-point"><div class="about-point-dot"></div><p><strong>Production-Ready</strong> — Models that work in the real world, monitored and updated continuously.</p></div>
-        <div class="about-point"><div class="about-point-dot"></div><p><strong>Measurable ROI</strong> — Clear pricing, realistic timelines, and transparent impact metrics on every project.</p></div>
-      </div>
-      <br/>
-      <a href="#contact" class="btn-primary" style="margin-top:1rem; display:inline-flex;">Get Started Today →</a>
-    </div>
-  </div>
-</section>
-
-<!-- DATA VIZ SHOWCASE -->
-<section class="viz-strip">
-  <div class="viz-strip-header reveal">
-    <span class="section-label">What We Deliver</span>
-    <h2 class="section-title">Real Results. Real Data.</h2>
-    <p class="section-desc" style="margin:0 auto;">From demand forecasting to automated inventory—here's what AI does for your business.</p>
-  </div>
-  <div class="viz-images">
-    <div class="viz-img-card reveal">
-      <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=700&q=80" alt="Revenue optimization dashboard" loading="lazy"/>
-      <div class="viz-img-label">💰 Revenue & Pricing Optimization</div>
-    </div>
-    <div class="viz-img-card reveal">
-      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=700&q=80" alt="Demand forecasting analytics" loading="lazy"/>
-      <div class="viz-img-label">📦 Demand Forecasting & Inventory</div>
-    </div>
-    <div class="viz-img-card reveal">
-      <img src="https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=700&q=80" alt="Supply chain optimization" loading="lazy"/>
-      <div class="viz-img-label">🚚 Supply Chain Automation</div>
-    </div>
-  </div>
-</section>
-
-<!-- SERVICES -->
-<section class="services-section" id="services">
-  <div class="services-header reveal">
-    <span class="section-label">Core Services</span>
-    <h2 class="section-title">AI Solutions Built<br>for E-Commerce</h2>
-    <p class="section-desc">End-to-end services designed to unlock hidden revenue and eliminate operational inefficiencies.</p>
-  </div>
-  <div class="services-grid">
-    <div class="service-card reveal">
-      <div class="service-icon">💰</div>
-      <h3>Revenue Optimization</h3>
-      <p>AI-driven pricing strategies, dynamic bundling, and personalized recommendations that increase AOV and customer lifetime value automatically.</p>
-      <a href="#contact" class="service-link">Learn More →</a>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-icon">📊</div>
-      <h3>Demand Forecasting</h3>
-      <p>Predict customer demand weeks in advance. Optimize inventory levels, reduce waste, and maximize margin with machine learning models trained on your data.</p>
-      <a href="#contact" class="service-link">Learn More →</a>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-icon">📦</div>
-      <h3>Inventory Intelligence</h3>
-      <p>AI systems that manage multi-warehouse inventory, predict stockouts, auto-reorder, and optimize stock levels across all channels in real-time.</p>
-      <a href="#contact" class="service-link">Learn More →</a>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-icon">⚙️</div>
-      <h3>Supply Chain Automation</h3>
-      <p>Automate procurement, fulfillment, and logistics workflows. Reduce manual errors by 90% and cut operational costs by 40%+ immediately.</p>
-      <a href="#contact" class="service-link">Learn More →</a>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-icon">🎯</div>
-      <h3>Customer Segmentation</h3>
-      <p>Automatically segment customers by behavior and profitability. Run targeted campaigns that convert at higher rates and reduce churn meaningfully.</p>
-      <a href="#contact" class="service-link">Learn More →</a>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-icon">📈</div>
-      <h3>Analytics & Dashboards</h3>
-      <p>Real-time dashboards that reveal your business metrics instantly. Track revenue by channel, product, customer segment, and geography.</p>
-      <a href="#contact" class="service-link">Learn More →</a>
-    </div>
-  </div>
-</section>
-
-<!-- PROCESS -->
-<section class="process-section" id="process">
-  <div class="process-inner">
-    <div>
-      <div class="reveal">
-        <span class="section-label">How It Works</span>
-        <h2 class="section-title">Our Proven<br>Implementation Process</h2>
-        <p class="section-desc">A streamlined, transparent workflow that takes your business from strategy to live AI—every step tracked and measured.</p>
-      </div>
-      <div class="process-steps">
-        <div class="step reveal"><div class="step-num">01</div><div class="step-body"><h4>Discovery & Assessment</h4><p>Understand your current setup, pain points, data readiness, and growth targets. Free 30-minute call.</p></div></div>
-        <div class="step reveal"><div class="step-num">02</div><div class="step-body"><h4>Data Audit & Strategy</h4><p>Evaluate your data quality, sources, and gaps. Build a phased AI roadmap with clear milestones and ROI targets.</p></div></div>
-        <div class="step reveal"><div class="step-num">03</div><div class="step-body"><h4>Model Development</h4><p>Build and test ML models on your historical data. Validate accuracy and real-world performance before go-live.</p></div></div>
-        <div class="step reveal"><div class="step-num">04</div><div class="step-body"><h4>Dashboard & Integration</h4><p>Create live dashboards and integrate AI predictions into your operations (Shopify, WooCommerce, ERP, etc.).</p></div></div>
-        <div class="step reveal"><div class="step-num">05</div><div class="step-body"><h4>Deployment & Training</h4><p>Go live with full monitoring. Train your team to interpret results and act on insights daily.</p></div></div>
-        <div class="step reveal"><div class="step-num">06</div><div class="step-body"><h4>Monitor & Optimize</h4><p>Track KPI impact in real-time. Continuously refine models as you collect new data and market conditions shift.</p></div></div>
-      </div>
-    </div>
-    <div class="process-visual reveal">
-      <div class="visual-title">📊 Typical Client Impact (First 6 Months)</div>
-      <div class="bar-chart">
-        <div class="bar-row"><span class="bar-label">Revenue</span><div class="bar-track"><div class="bar-fill" style="width:40%; animation-delay:0.1s"></div></div><span class="bar-pct">+40%</span></div>
-        <div class="bar-row"><span class="bar-label">AOV</span><div class="bar-track"><div class="bar-fill" style="width:28%; animation-delay:0.3s"></div></div><span class="bar-pct">+28%</span></div>
-        <div class="bar-row"><span class="bar-label">Inventory Efficiency</span><div class="bar-track"><div class="bar-fill" style="width:60%; animation-delay:0.5s"></div></div><span class="bar-pct">+60%</span></div>
-        <div class="bar-row"><span class="bar-label">Fulfillment Speed</span><div class="bar-track"><div class="bar-fill" style="width:50%; animation-delay:0.7s"></div></div><span class="bar-pct">+50%</span></div>
-        <div class="bar-row"><span class="bar-label">Cost Reduction</span><div class="bar-track"><div class="bar-fill" style="width:45%; animation-delay:0.9s"></div></div><span class="bar-pct">-45%</span></div>
-      </div>
-      <div class="kpi-row">
-        <div class="kpi-box"><div class="kpi-val">Free</div><div class="kpi-key">Initial Consultation</div></div>
-        <div class="kpi-box"><div class="kpi-val">Clear</div><div class="kpi-key">Upfront Pricing</div></div>
-        <div class="kpi-box"><div class="kpi-val">Measured</div><div class="kpi-key">ROI Monthly</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- USE CASES / INDUSTRIES -->
-<section class="industries-section" id="industries">
-  <div class="industries-header reveal">
-    <span class="section-label">Who We Help</span>
-    <h2 class="section-title">E-Commerce at Any Scale</h2>
-    <p class="section-desc">From early-stage to 8-figure storefronts, we help businesses use AI to grow smarter.</p>
-  </div>
-  <div class="industries-grid">
-    <div class="industry-card reveal"><span class="industry-emoji">🛍️</span><h4>Direct-to-Consumer Brands</h4><p>Increase LTV, reduce CAC, personalize at scale</p></div>
-    <div class="industry-card reveal"><span class="industry-emoji">📦</span><h4>Multi-Channel Sellers</h4><p>Inventory sync, demand balancing across platforms</p></div>
-    <div class="industry-card reveal"><span class="industry-emoji">🏭</span><h4>Dropshipping & 3PL</h4><p>Real-time demand sensing, supplier coordination</p></div>
-    <div class="industry-card reveal"><span class="industry-emoji">🚚</span><h4>Logistics & Fulfillment</h4><p>Route optimization, warehouse automation</p></div>
-    <div class="industry-card reveal"><span class="industry-emoji">💳</span><h4>Subscription & SaaS</h4><p>Churn prediction, retention optimization</p></div>
-    <div class="industry-card reveal"><span class="industry-emoji">🎯</span><h4>B2B E-Commerce</h4><p>Account-based marketing, contract optimization</p></div>
-    <div class="industry-card reveal"><span class="industry-emoji">🏪</span><h4>Marketplace Sellers</h4><p>Algorithm optimization, ranking prediction</p></div>
-    <div class="industry-card reveal"><span class="industry-emoji">⚡</span><h4>Fast-Growing Startups</h4><p>Build data infrastructure from day one</p></div>
-  </div>
-</section>
-
-<!-- WHY US -->
-<section class="testimonials-section" id="testimonials">
-  <div class="testi-header reveal">
-    <span class="section-label">Why Shana AI</span>
-    <h2 class="section-title">Built for E-Commerce<br>Leaders</h2>
-    <p class="section-desc" style="margin:0 auto 3rem;">We're not a generic data consultancy. Everything we do is optimized for e-commerce growth and supply chain automation.</p>
-  </div>
-  <div class="testi-grid">
-    <div class="testi-card reveal">
-      <div class="testi-quote" style="font-size:2rem;">🎯</div>
-      <p class="testi-text" style="font-style:normal;">We speak e-commerce fluently. We understand AOV, LTV, churn, unit economics, fulfillment, and what actually drives your margin. No learning curve.</p>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:linear-gradient(135deg,#00d4ff,#0077aa);">EC</div>
-        <div><div class="testi-name">E-Commerce Expertise</div><div class="testi-role">Not generic data science</div></div>
-      </div>
-    </div>
-    <div class="testi-card reveal">
-      <div class="testi-quote" style="font-size:2rem;">⚡</div>
-      <p class="testi-text" style="font-style:normal;">Fast deployment. Most projects deliver measurable impact within 4-12 weeks. We optimize for speed without sacrificing quality.</p>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:linear-gradient(135deg,#7c3aed,#4f1fb5);">FD</div>
-        <div><div class="testi-name">Fast Deployment</div><div class="testi-role">Results in weeks, not months</div></div>
-      </div>
-    </div>
-    <div class="testi-card reveal">
-      <div class="testi-quote" style="font-size:2rem;">💡</div>
-      <p class="testi-text" style="font-style:normal;">Clear ROI tracking. Every model we build connects to revenue, margin, cost, or efficiency. We measure what matters to your business.</p>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:linear-gradient(135deg,#00d4ff,#7c3aed);">ROI</div>
-        <div><div class="testi-name">ROI-Driven</div><div class="testi-role">Measurable impact every project</div></div>
-      </div>
-    </div>
-  </div>
-  <div style="text-align:center; margin-top:3rem;" class="reveal">
-    <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:1.2rem;">We're actively building partnerships with e-commerce leaders. Early clients get priority access and introductory pricing.</p>
-    <a href="#contact" class="btn-primary">Schedule Your Free Strategy Call →</a>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="faq-section" id="faq">
-  <div class="faq-inner">
-    <div class="reveal">
-      <span class="section-label">FAQ</span>
-      <h2 class="section-title">Common Questions</h2>
-      <p class="section-desc">Don't see your question? Reach out directly and we'll answer within 24 hours.</p>
-      <br/>
-      <a href="#contact" class="btn-secondary" style="margin-top:1rem;">Contact Us →</a>
-    </div>
-      <div class="faq-list">
-        <div class="faq-item reveal">
-          <div class="faq-q" onclick="toggleFaq(this)">How much does a typical project cost? <div class="faq-icon">+</div></div>
-          <div class="faq-a">Projects range from $2,500 for focused analytics to $15,000+ for full ML model development. We always provide a fixed-fee quote after a free scoping call. No surprises, no hidden costs.</div>
-        </div>
-        <div class="faq-item reveal">
-          <div class="faq-q" onclick="toggleFaq(this)">What e-commerce platforms do you work with? <div class="faq-icon">+</div></div>
-          <div class="faq-a">We integrate with Shopify, WooCommerce, BigCommerce, custom platforms, and multi-channel marketplaces. If you have data, we can work with it.</div>
-        </div>
-        <div class="faq-item reveal">
-          <div class="faq-q" onclick="toggleFaq(this)">How long does a project typically take? <div class="faq-icon">+</div></div>
-          <div class="faq-a">Quick analytics dashboards: 1-2 weeks. Demand forecasting or inventory AI: 4-8 weeks. Complex supply chain automation: 8-12 weeks. We always agree on timeline upfront and hit it.</div>
-        </div>
-        <div class="faq-item reveal">
-          <div class="faq-q" onclick="toggleFaq(this)">Do you work with startups and small businesses? <div class="faq-icon">+</div></div>
-          <div class="faq-a">Absolutely — that's our core focus. We have flexible engagement models for early-stage companies and offer introductory pricing to new clients.</div>
-        </div>
-        <div class="faq-item reveal">
-          <div class="faq-q" onclick="toggleFaq(this)">What about data privacy and security? <div class="faq-icon">+</div></div>
-          <div class="faq-a">We sign an NDA before any data is shared. All data is encrypted, access-controlled, and never shared with third parties. GDPR and HIPAA-compliant practices on every project.</div>
-        </div>
-        <div class="faq-item reveal">
-          <div class="faq-q" onclick="toggleFaq(this)">What's included in the free consultation? <div class="faq-icon">+</div></div>
-          <div class="faq-a">A 30-minute strategy call where we listen to your challenge, assess your data readiness, identify quick wins, and share honest recommendations. No pitch—just real guidance to help you decide.</div>
-        </div>
-      </div>
-  </div>
-</section>
-
-<!-- PRICING -->
-<section style="padding:7rem 5%; background:var(--bg-card); border-top:1px solid var(--border);" id="pricing">
-  <div style="text-align:center; margin-bottom:4rem;" class="reveal">
-    <span class="section-label">Pricing</span>
-    <h2 class="section-title">Flexible Engagement Models</h2>
-    <p class="section-desc" style="margin:0 auto;">No hidden fees. No surprises. Pick the model that fits your timeline and budget.</p>
-  </div>
-  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; max-width:1000px; margin:0 auto;">
-    <div class="service-card reveal" style="text-align:center;">
-      <div style="font-size:2rem; margin-bottom:1rem;">📊</div>
-      <h3>Project-Based</h3>
-      <div style="font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:var(--accent); margin:1rem 0;">$2,500–$15,000</div>
-      <p>Fixed-fee for defined scopes: dashboards, forecasting, inventory optimization, automation. Clear deliverables and timeline.</p>
-      <a href="#contact" class="service-link" style="justify-content:center;">Get a Quote →</a>
-    </div>
-    <div class="service-card reveal" style="text-align:center; border-color:rgba(0,212,255,0.4);">
-      <div style="font-size:2rem; margin-bottom:1rem;">⏱️</div>
-      <h3>Hourly Consulting</h3>
-      <div style="font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:var(--accent); margin:1rem 0;">$150–$300<span style="font-size:1rem; color:var(--text-muted);">/hr</span></div>
-      <p>For ad-hoc analysis, quick wins, strategy guidance, or hands-on implementation support. Pay only for what you use.</p>
-      <a href="#contact" class="service-link" style="justify-content:center;">Book Time →</a>
-    </div>
-    <div class="service-card reveal" style="text-align:center;">
-      <div style="font-size:2rem; margin-bottom:1rem;">🔄</div>
-      <h3>Monthly Retainer</h3>
-      <div style="font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:var(--accent); margin:1rem 0;">$3,000–$10,000<span style="font-size:1rem; color:var(--text-muted);">+/mo</span></div>
-      <p>Dedicated ongoing support. Continuous model monitoring, optimization, new analysis, and strategic guidance every month.</p>
-      <a href="#contact" class="service-link" style="justify-content:center;">Let's Talk →</a>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta-section reveal">
-  <span class="section-label">Ready to Scale?</span>
-  <h2 class="section-title">Let's Build Your<br>AI Advantage</h2>
-  <p class="section-desc">Start with a free 30-minute strategy call. No commitment. No sales pitch. Just honest guidance on how AI can accelerate your growth.</p>
-  <a href="#contact" class="btn-primary" style="font-size:1.05rem; padding: 1rem 2.5rem;">Book Your Free Call →</a>
-</section>
-
-<!-- CONTACT -->
-<section class="contact-section" id="contact">
-  <div class="contact-inner">
-    <div>
-      <div class="reveal">
-        <span class="section-label">Contact Us</span>
-        <h2 class="section-title">Let's Talk<br>E-Commerce AI</h2>
-        <p class="section-desc">Fill out the form or reach out directly. We respond within one business day and love working with e-commerce teams and founders.</p>
-      </div>
-      <div class="contact-info">
-        <div class="contact-detail reveal">
-          <div class="contact-icon">📧</div>
-          <div><h5>Email</h5><p>info@shanaai.com</p></div>
-        </div>
-        <div class="contact-detail reveal">
-          <div class="contact-icon">📞</div>
-          <div><h5>Phone</h5><p>+1 (201) 761-9209</p></div>
-        </div>
-        <div class="contact-detail reveal">
-          <div class="contact-icon">📍</div>
-          <div><h5>Available</h5><p>Remote-First · US & Global</p></div>
-        </div>
-        <div class="contact-detail reveal">
-          <div class="contact-icon">🕒</div>
-          <div><h5>Response Time</h5><p>Within 24 Hours</p></div>
-        </div>
-      </div>
-    </div>
-    <div class="contact-form reveal">
-      <div id="formWrap">
-        <form id="contactForm" action="https://formspree.io/f/mjglorke" method="POST">
-          <div class="form-row">
-            <div class="form-group"><label>First Name *</label><input type="text" name="first_name" placeholder="John" required/></div>
-            <div class="form-group"><label>Last Name *</label><input type="text" name="last_name" placeholder="Smith" required/></div>
-          </div>
-          <div class="form-group"><label>Work Email *</label><input type="email" name="email" placeholder="john@company.com" required/></div>
-          <div class="form-group"><label>Phone Number</label><input type="tel" name="phone" placeholder="+1 (555) 000-0000"/></div>
-          <div class="form-group"><label>Company / Store Name</label><input type="text" name="company" placeholder="Your Company Name"/></div>
-          <div class="form-group">
-            <label>What Are You Most Interested In? *</label>
-            <select name="service" required>
-              <option value="">Select...</option>
-              <option>Revenue Optimization & Pricing</option>
-              <option>Demand Forecasting</option>
-              <option>Inventory Management</option>
-              <option>Supply Chain Automation</option>
-              <option>Analytics Dashboard</option>
-              <option>Customer Segmentation</option>
-              <option>General Consultation</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="form-group"><label>Tell Us About Your Business</label><textarea name="message" placeholder="Annual revenue, team size, main pain point, current e-commerce platform..."></textarea></div>
-          <input type="text" name="_gotcha" style="display:none"/>
-          <input type="hidden" name="_next" value=""/>
-          <button type="submit" class="form-submit" id="submitBtn">Send Message & Book Call →</button>
-        </form>
-      </div>
-      <div class="form-success" id="formSuccess">
-        ✅ Perfect! We've got your message. Expect a call from us within 24 hours to discuss your e-commerce AI strategy.
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-top">
-    <div class="footer-brand">
-      <a href="#" class="nav-logo">Shana <span>AI</span></a>
-      <p>AI-powered solutions for e-commerce growth and supply chain automation. Help your business scale faster, smarter, with less cost.</p>
-    </div>
-    <div class="footer-col">
-      <h5>Services</h5>
-      <ul>
-        <li><a href="#services">Revenue Optimization</a></li>
-        <li><a href="#services">Demand Forecasting</a></li>
-        <li><a href="#services">Inventory AI</a></li>
-        <li><a href="#services">Supply Chain</a></li>
-        <li><a href="#services">Analytics</a></li>
-        <li><a href="#services">Segmentation</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h5>Company</h5>
-      <ul>
-        <li><a href="#">Home</a></li>
+  <header class="site-header" id="siteHeader">
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="Shana AI Labs home">
+        <span class="brand-mark">S</span><span>Shana <span>AI Labs</span></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#problems">Challenges</a></li>
+        <li><a href="#services">Solutions</a></li>
         <li><a href="#process">How It Works</a></li>
-        <li><a href="#industries">Use Cases</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li><a href="#">LinkedIn</a></li>
+        <li><a class="nav-cta" href="#contact">Talk With Us <span class="arrow">→</span></a></li>
       </ul>
     </div>
-    <div class="footer-col">
-      <h5>Legal</h5>
-      <ul>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Terms of Service</a></li>
-        <li><a href="#">Cookie Policy</a></li>
-        <li><a href="#contact">Contact Us</a></li>
-      </ul>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">Practical automation for home-service businesses</div>
+          <h1>Turn more inquiries into <span class="gradient-text">booked jobs.</span></h1>
+          <p>Shana AI Labs helps HVAC and plumbing businesses respond to leads faster, follow up consistently, and spend less time on repetitive admin—with practical AI and workflow automation.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#contact">Request a Workflow Review <span class="arrow">→</span></a>
+            <a class="btn btn-secondary" href="#services">Explore Solutions</a>
+          </div>
+          <div class="hero-note"><span>✓</span> Built around your existing tools and the way your team works.</div>
+        </div>
+
+        <div class="workflow-card" aria-label="Illustration of an automated lead recovery workflow">
+          <div class="workflow-top">
+            <strong>Example: Lead recovery workflow</strong>
+            <span class="live-pill">AUTOMATION FLOW</span>
+          </div>
+          <p class="workflow-sub">From missed call to team follow-up</p>
+          <div class="flow-step">
+            <div class="flow-icon">☎</div>
+            <div><strong>Customer calls your business</strong><small>Your team is on another job and misses the call</small></div>
+          </div>
+          <div class="flow-connector"></div>
+          <div class="flow-step">
+            <div class="flow-icon">✉</div>
+            <div><strong>Prompt response is sent</strong><small>A configured text invites the customer to share what they need</small></div>
+          </div>
+          <div class="flow-connector"></div>
+          <div class="flow-step">
+            <div class="flow-icon">⌁</div>
+            <div><strong>Lead details are organized</strong><small>Contact, service request, and location go to your chosen system</small></div>
+          </div>
+          <div class="flow-connector"></div>
+          <div class="flow-step">
+            <div class="flow-icon">✓</div>
+            <div><strong>Your team gets notified</strong><small>A person takes over to confirm availability and next steps</small></div>
+          </div>
+          <div class="workflow-foot"><span>●</span> Your team stays in control. Automation handles the repetitive steps.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="trust-strip">
+      <div class="container trust-inner">
+        <span><b>01</b> Capture inquiries</span>
+        <span><b>02</b> Follow up faster</span>
+        <span><b>03</b> Organize leads</span>
+        <span><b>04</b> Keep people in control</span>
+      </div>
     </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2025 Shana AI and Data Consultancy LLC. All rights reserved.</span>
-    <span>Built for e-commerce. Powered by AI.</span>
-  </div>
-</footer>
 
-<script>
-  function toggleMenu() {
-    document.getElementById('navLinks').classList.toggle('open');
-  }
+    <section class="section" id="problems">
+      <div class="container">
+        <div class="section-intro reveal">
+          <div class="eyebrow">The everyday challenge</div>
+          <h2>Good leads can get lost in a <span class="gradient-text">busy workday.</span></h2>
+          <p>When your team is on a job, driving, or handling customers, it is easy for calls and follow-ups to fall through the cracks. We help make those processes more consistent.</p>
+        </div>
+        <div class="problem-grid">
+          <article class="problem-card reveal">
+            <div class="card-icon">☎</div>
+            <h3>Missed calls</h3>
+            <p>A potential customer calls while everyone is busy. Without a quick response, they may contact another contractor.</p>
+          </article>
+          <article class="problem-card reveal">
+            <div class="card-icon">⌛</div>
+            <h3>Slow lead response</h3>
+            <p>Website forms, emails, and messages sit unanswered while the team is focused on today's jobs.</p>
+          </article>
+          <article class="problem-card reveal">
+            <div class="card-icon">▤</div>
+            <h3>Forgotten estimates</h3>
+            <p>Quotes are sent, but reminders depend on someone remembering to check and follow up.</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
-  window.addEventListener('scroll', () => {
-    const nav = document.getElementById('navbar');
-    nav.style.padding = window.scrollY > 60 ? '0.8rem 5%' : '1.2rem 5%';
-  });
+    <section class="section services-section" id="services">
+      <div class="container">
+        <div class="section-intro reveal">
+          <div class="eyebrow">What we help automate</div>
+          <h2>Simple systems that support your <span class="gradient-text">daily operations.</span></h2>
+          <p>We start with one workflow that solves a real problem. Then, if it makes sense, we connect more of your customer communication and admin processes.</p>
+        </div>
+        <div class="services-grid">
+          <article class="service-card reveal">
+            <div class="card-icon">↩</div>
+            <h3>Missed-call text-back</h3>
+            <p>Send a timely, pre-approved text after an unanswered call, collect the customer's request, and alert your team.</p>
+            <span class="service-tag">LEAD RECOVERY</span>
+          </article>
+          <article class="service-card reveal">
+            <div class="card-icon">◎</div>
+            <h3>Website lead capture</h3>
+            <p>Organize quote requests and service inquiries from your website, then route the details to the right person.</p>
+            <span class="service-tag">LEAD MANAGEMENT</span>
+          </article>
+          <article class="service-card reveal">
+            <div class="card-icon">↗</div>
+            <h3>Estimate follow-up</h3>
+            <p>Set up reminders for open estimates and notify your team when a customer replies or needs assistance.</p>
+            <span class="service-tag">FOLLOW-UP</span>
+          </article>
+          <article class="service-card reveal">
+            <div class="card-icon">▦</div>
+            <h3>CRM and workflow integration</h3>
+            <p>Connect forms, spreadsheets, calendars, and supported business tools so information is easier to track.</p>
+            <span class="service-tag">INTEGRATION</span>
+          </article>
+          <article class="service-card reveal">
+            <div class="card-icon">✧</div>
+            <h3>AI phone and chat assistance</h3>
+            <p>Explore a carefully scoped AI assistant for routine questions and information gathering, with clear human handoff.</p>
+            <span class="service-tag">AI ASSISTANCE</span>
+          </article>
+          <article class="service-card reveal">
+            <div class="card-icon">▥</div>
+            <h3>Lead activity reporting</h3>
+            <p>Get a clearer view of incoming inquiries, response status, follow-up activity, and where leads need attention.</p>
+            <span class="service-tag">VISIBILITY</span>
+          </article>
+        </div>
+      </div>
+    </section>
 
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    <section class="section" id="who-we-help">
+      <div class="container">
+        <div class="section-intro reveal">
+          <div class="eyebrow">Who we work with</div>
+          <h2>Built for teams that keep homes <span class="gradient-text">running smoothly.</span></h2>
+          <p>Our initial focus is independent home-service businesses that want a more reliable way to manage customer inquiries without adding unnecessary complexity.</p>
+        </div>
+        <div class="audience-grid">
+          <article class="audience-card reveal">
+            <div class="audience-symbol">❄</div>
+            <div><h3>HVAC contractors</h3><p>Heating, cooling, repair, installation, and maintenance inquiries.</p></div>
+          </article>
+          <article class="audience-card reveal">
+            <div class="audience-symbol">⌁</div>
+            <div><h3>Plumbing companies</h3><p>Service requests, urgent inquiries, estimates, and customer follow-ups.</p></div>
+          </article>
+          <article class="audience-card reveal">
+            <div class="audience-symbol">⚡</div>
+            <div><h3>Electrical contractors</h3><p>Organizing installation, repair, and estimate requests.</p></div>
+          </article>
+          <article class="audience-card reveal">
+            <div class="audience-symbol">⌂</div>
+            <div><h3>Other home-service teams</h3><p>We can discuss whether the same workflow approach fits your business.</p></div>
+          </article>
+        </div>
+      </div>
+    </section>
 
-  function toggleFaq(el) {
-    const item = el.parentElement;
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
-  }
+    <section class="section process-section" id="process">
+      <div class="container">
+        <div class="section-intro reveal">
+          <div class="eyebrow">A clear process</div>
+          <h2>Start small. Make it work. <span class="gradient-text">Improve from there.</span></h2>
+          <p>No complicated transformation project is required. We focus on understanding your current process and improving one useful part at a time.</p>
+        </div>
+        <div class="process-grid">
+          <article class="process-card reveal"><div class="process-number">01</div><h3>Understand</h3><p>We learn how calls, website leads, estimates, and follow-ups are handled today.</p></article>
+          <article class="process-card reveal"><div class="process-number">02</div><h3>Map the workflow</h3><p>We identify the repetitive steps, tools involved, and points where a person should take over.</p></article>
+          <article class="process-card reveal"><div class="process-number">03</div><h3>Build and test</h3><p>We configure the agreed automation, test common situations, and review it with your team.</p></article>
+          <article class="process-card reveal"><div class="process-number">04</div><h3>Launch and improve</h3><p>We monitor the workflow with you and make adjustments based on real usage and feedback.</p></article>
+        </div>
+      </div>
+    </section>
 
-  const contactForm = document.getElementById('contactForm');
-  if (contactForm) {
-    contactForm.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const btn = document.getElementById('submitBtn');
-      btn.textContent = 'Sending...';
-      btn.disabled = true;
+    <section class="section" id="why-shana">
+      <div class="container why-grid">
+        <div class="why-copy reveal">
+          <div class="eyebrow">Why Shana AI Labs</div>
+          <h2>Technology should make work <span class="gradient-text">easier—not harder.</span></h2>
+          <p>We focus on practical systems that fit the way a business already operates. The goal is not to add another complicated platform. It is to reduce repetitive work, make information easier to act on, and keep your team involved where judgment matters.</p>
+        </div>
+        <div class="reason-list">
+          <div class="reason-card reveal"><span class="check">✓</span><div><strong>Built around your process</strong><p>We first understand your current tools and workflow before recommending automation.</p></div></div>
+          <div class="reason-card reveal"><span class="check">✓</span><div><strong>Human handoff where it matters</strong><p>Customers, emergencies, pricing, and scheduling decisions can be routed to your team.</p></div></div>
+          <div class="reason-card reveal"><span class="check">✓</span><div><strong>Clear scope and communication</strong><p>You know what the workflow is intended to do, what it does not do, and how it will be tested.</p></div></div>
+          <div class="reason-card reveal"><span class="check">✓</span><div><strong>Room to grow</strong><p>Start with one useful automation and expand only when the next improvement is worthwhile.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container faq-wrap">
+        <div class="section-intro reveal">
+          <div class="eyebrow">Questions</div>
+          <h2>Before we <span class="gradient-text">get started.</span></h2>
+          <p>Not sure whether automation fits your business? Tell us how your team currently handles calls and new inquiries.</p>
+          <a class="btn btn-secondary" href="#contact" style="margin-top:22px">Ask a question <span class="arrow">→</span></a>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false"><span>Do I need to replace my current CRM or field-service software?</span><span>+</span></button>
+            <div class="faq-answer"><p>Not necessarily. We first review the tools you already use and check whether a reliable integration or supporting workflow is possible.</p></div>
+          </div>
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false"><span>Can you automate calls and text messages?</span><span>+</span></button>
+            <div class="faq-answer"><p>We can assess options for missed-call follow-up, messaging, and AI-assisted call handling. The exact setup depends on your phone provider, consent requirements, and the workflow you need.</p></div>
+          </div>
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false"><span>Will AI book jobs or give customers prices automatically?</span><span>+</span></button>
+            <div class="faq-answer"><p>Only if the business explicitly approves a suitable workflow and the required information is available. We recommend keeping price commitments, emergency decisions, and uncertain cases with a person.</p></div>
+          </div>
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false"><span>How much does an automation project cost?</span><span>+</span></button>
+            <div class="faq-answer"><p>Pricing depends on the tools, integrations, message volume, and complexity. After understanding your workflow, we can provide a defined scope and quote before work begins.</p></div>
+          </div>
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false"><span>How long does implementation take?</span><span>+</span></button>
+            <div class="faq-answer"><p>It depends on the systems involved and how quickly we can test with your team. We will agree on a realistic timeline after reviewing the requirements.</p></div>
+          </div>
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false"><span>Do you work with businesses outside the United States?</span><span>+</span></button>
+            <div class="faq-answer"><p>We can discuss remote projects in the US and other markets. Availability depends on the systems, messaging rules, and requirements in the business's location.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-band">
+      <div class="container reveal">
+        <div class="eyebrow">Let's find your first automation win</div>
+        <h2>Where are you losing time—or <span class="gradient-text">missing opportunities?</span></h2>
+        <p>Tell us how your business handles new calls and inquiries. We'll discuss whether a simple workflow could help.</p>
+        <a class="btn btn-primary" href="#contact">Request a Workflow Review <span class="arrow">→</span></a>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container contact-grid">
+        <div class="contact-copy reveal">
+          <div class="eyebrow">Contact Shana AI Labs</div>
+          <h2>Let's talk about your <span class="gradient-text">workflow.</span></h2>
+          <p>Share a little about your business and what happens when a new customer calls or submits an inquiry. We'll get back to you to discuss possible next steps.</p>
+          <div class="contact-details">
+            <div class="contact-detail"><div class="card-icon">✉</div><div><strong>Email</strong><a href="mailto:info@shanaai.com">info@shanaai.com</a></div></div>
+            <div class="contact-detail"><div class="card-icon">☎</div><div><strong>Phone</strong><a href="tel:+12017619209">+1 (201) 761-9209</a></div></div>
+            <div class="contact-detail"><div class="card-icon">◎</div><div><strong>Availability</strong><span>Remote-first · US and global</span></div></div>
+          </div>
+        </div>
+
+        <div class="contact-form reveal">
+          <div class="form-heading">
+            <h3>Tell us about your business</h3>
+            <p>Fields marked with * are required.</p>
+          </div>
+          <div id="formWrap">
+            <form id="contactForm" action="https://formspree.io/f/mjglorke" method="POST">
+              <div class="form-row">
+                <div class="form-group"><label for="firstName">First name *</label><input id="firstName" name="first_name" type="text" autocomplete="given-name" placeholder="Your first name" required></div>
+                <div class="form-group"><label for="lastName">Last name *</label><input id="lastName" name="last_name" type="text" autocomplete="family-name" placeholder="Your last name" required></div>
+              </div>
+              <div class="form-row">
+                <div class="form-group"><label for="email">Work email *</label><input id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required></div>
+                <div class="form-group"><label for="phone">Phone number</label><input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+1 (555) 000-0000"></div>
+              </div>
+              <div class="form-group"><label for="company">Business name *</label><input id="company" name="company" type="text" placeholder="Your company" required></div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="industry">Business type *</label>
+                  <select id="industry" name="business_type" required>
+                    <option value="">Choose one</option>
+                    <option>HVAC</option><option>Plumbing</option><option>Electrical</option><option>Roofing</option><option>Cleaning</option><option>Other home service</option><option>Other business</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="teamSize">Team size</label>
+                  <select id="teamSize" name="team_size">
+                    <option value="">Select team size</option><option>Just me</option><option>2–5</option><option>6–15</option><option>16–30</option><option>31+</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="interest">What would you like to improve? *</label>
+                <select id="interest" name="service_interest" required>
+                  <option value="">Choose an area</option>
+                  <option>Missed-call follow-up</option><option>Website lead capture</option><option>Estimate follow-up</option><option>AI phone or chat assistant</option><option>CRM and workflow integration</option><option>Not sure yet — let's discuss</option>
+                </select>
+              </div>
+              <div class="form-group"><label for="message">Tell us what happens today</label><textarea id="message" name="message" placeholder="For example: We miss calls while technicians are on jobs, and we don't always follow up with new inquiries."></textarea></div>
+              <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+              <button class="btn btn-primary form-submit" id="submitBtn" type="submit">Send inquiry <span class="arrow">→</span></button>
+              <p class="form-note">Submitting this form asks us to contact you about your inquiry. It does not enroll you in marketing text messages.</p>
+              <p class="form-error" id="formError" role="alert">We couldn't send your message right now. Please try again or email us directly.</p>
+            </form>
+          </div>
+          <div class="form-success" id="formSuccess" role="status">
+            <h3>Thank you for reaching out!</h3>
+            <p style="color:inherit;margin-top:8px">Your inquiry has been sent. We'll review the details and get back to you.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="brand" href="#home"><span class="brand-mark">S</span><span>Shana <span>AI Labs</span></span></a>
+          <p>Practical AI and workflow automation for home-service businesses. Helping teams manage customer inquiries and repetitive processes with greater consistency.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <a href="#problems">Business challenges</a>
+          <a href="#services">Solutions</a>
+          <a href="#process">How it works</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h4>Get in touch</h4>
+          <a href="#contact">Request a workflow review</a>
+          <a href="mailto:info@shanaai.com">info@shanaai.com</a>
+          <a href="tel:+12017619209">+1 (201) 761-9209</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="year"></span> Shana AI and Data Consultancy LLC. All rights reserved.</span>
+        <span>Practical automation. People in control.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const header = document.getElementById("siteHeader");
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    window.addEventListener("scroll", () => {
+      header.classList.toggle("scrolled", window.scrollY > 20);
+    });
+
+    menuToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      menuToggle.setAttribute("aria-label", isOpen ? "Close navigation" : "Open navigation");
+      menuToggle.textContent = isOpen ? "×" : "☰";
+    });
+
+    navLinks.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "Open navigation");
+        menuToggle.textContent = "☰";
+      });
+    });
+
+    document.querySelectorAll(".faq-question").forEach(button => {
+      button.addEventListener("click", () => {
+        const item = button.closest(".faq-item");
+        const willOpen = !item.classList.contains("open");
+        document.querySelectorAll(".faq-item").forEach(row => {
+          row.classList.remove("open");
+          row.querySelector(".faq-question").setAttribute("aria-expanded", "false");
+        });
+        if (willOpen) {
+          item.classList.add("open");
+          button.setAttribute("aria-expanded", "true");
+        }
+      });
+    });
+
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const contactForm = document.getElementById("contactForm");
+    contactForm.addEventListener("submit", async event => {
+      event.preventDefault();
+      const button = document.getElementById("submitBtn");
+      const error = document.getElementById("formError");
+      const originalText = button.innerHTML;
+      error.style.display = "none";
+      button.disabled = true;
+      button.textContent = "Sending...";
 
       try {
         const response = await fetch(contactForm.action, {
-          method: 'POST',
+          method: "POST",
           body: new FormData(contactForm),
-          headers: { 'Accept': 'application/json' }
+          headers: { "Accept": "application/json" }
         });
-
-        if (response.ok) {
-          document.getElementById('formWrap').style.display = 'none';
-          document.getElementById('formSuccess').style.display = 'block';
-        } else {
-          btn.textContent = 'Something went wrong. Try again.';
-          btn.disabled = false;
-          btn.style.background = '#ef4444';
-        }
+        if (!response.ok) throw new Error("Form submission failed");
+        document.getElementById("formWrap").style.display = "none";
+        document.getElementById("formSuccess").style.display = "block";
       } catch (err) {
-        btn.textContent = 'Network error. Try again.';
-        btn.disabled = false;
-        btn.style.background = '#ef4444';
+        error.style.display = "block";
+        button.disabled = false;
+        button.innerHTML = originalText;
       }
     });
-  }
-
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', () => { document.getElementById('navLinks').classList.remove('open'); });
-  });
-</script>
+  </script>
 </body>
 </html>
